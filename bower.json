@@ -1,0 +1,24 @@
+{
+  "name": "SysMedic",
+  "authors": [
+    "Yves Clêuder <yves.cl@live.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/bower_components",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.2.4",
+    "materialize": "0.97.7",
+    "datatables": "^1.10.15",
+    "material-preloader": "*"
+  }
+}
