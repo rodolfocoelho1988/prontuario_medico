@@ -1,3 +1,5 @@
 .idea/
 public/bower_components/
+!resources/cache/views/index.php
+resources/cache/views/
 vendor/
