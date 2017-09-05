@@ -3,9 +3,9 @@ var sysmedic = sysmedic || {};
 sysmedic.dashboard = (function() {
 
     // Mensagem no toast de boas vindas
-    var start = function() {
+    var welcome = function() {
         setTimeout(function() {
-            Materialize.toast('Bom trabalho =)', 4000)
+            Materialize.toast('Seja bem vindo =)', 4000)
         }, 4000);
     };
 
@@ -26,7 +26,7 @@ sysmedic.dashboard = (function() {
     };
 
     return {
-        start: start,
+        welcome: welcome,
         counterup: counterup
     };
 

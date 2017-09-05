@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Request;
+namespace App\Requests;
 
-use \Respect\Validation\Validator;
+use \Valitron\Validator;
 
-class UsuarioLoginResquest
+class UsuarioLoginRequest
 {
     public static function rules(array $request)
     {
         $v = new Validator($request);
-        $v->rule('required', ['password'])->message("O campo {field} é obrigatório.");
+        isset($request['crm']) ? $campo = 'crm' : $campo = 'email';
+        $v->rule('required', ['password', $campo])->message("O campo {field} é obrigatório.");
+        $campo === "email" ? $v->rule('email', ['email'])->message("O campo {field} tem que ser válido.") : '';
+
         $v->labels([
-            'password' => '<strong>senha</strong>'
+            'password' => 'senha',
+            $campo => $campo
         ]);
         if($v->validate())
             return true;

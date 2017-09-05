@@ -1,0 +1,13 @@
+{
+    "require": {
+        "twig/twig": "~1.0",
+        "filp/whoops": "^2.1",
+        "klein/klein": "^2.1",
+        "vlucas/valitron": "^1.4"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"App\\": "app/"
+    	}
+    }
+}
