@@ -75,4 +75,19 @@ abstract class Model
 	{
 		return self::$objInstance;
 	}
+
+    /**
+     * @param string $table
+     * @param string $column
+     * @param string $value
+     * @return int
+     */
+    public function valueExist(string $table, string $column, string $value)
+    {
+        $db = self::getInstance();
+        $db = $db->prepare("SELECT * FROM $table WHERE $column = :value");
+        $db->bindParam(":value", $value);
+        $db->execute();
+        return $db->rowCount();
+    }
 }

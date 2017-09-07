@@ -3,8 +3,11 @@
 namespace App;
 
 use App\Controllers\AgendamentoController;
+use App\Controllers\CidadeController;
 use App\Controllers\Dashboard;
+use App\Controllers\EstadoController;
 use App\Controllers\MedicoController;
+use App\Controllers\NacionalidadeController;
 use App\Controllers\PacienteController;
 use App\Controllers\UsuarioController;
 use \App\Libs\Twig as Twig;
@@ -43,6 +46,31 @@ class Route
         $this->route->respond('POST', '/login', function($request, $response) {
             $usuario = new UsuarioController();
             echo $usuario->login($response);
+        });
+
+        /**
+         * Médico
+         */
+        $this->route->respond('GET', '/medico/adicionar', function() {
+            $nacionalidade = new NacionalidadeController();
+            $estado = new EstadoController();
+            $array = [
+                "nacionalidades" => $nacionalidade->getAll(),
+                "estados" => $estado->getAll()
+            ];
+            echo $this->twig->render('medico-adicionar.tpl.html', $array);
+        });
+        $this->route->respond('POST', '/medico/adicionar', function($request, $response) {
+            $medico = new MedicoController();
+            echo json_encode($medico->register($response));
+        });
+
+        /**
+         * CidadeController
+         */
+        $this->route->respond('GET', '/cidade/[i:id]', function($request) {
+            $cidade = new CidadeController();
+            echo $cidade->get($request->id);
         });
     }
 

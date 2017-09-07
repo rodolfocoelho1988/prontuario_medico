@@ -7,6 +7,7 @@ use App\Models\Paciente as Paciente;
 use App\Models\Secretaria;
 use App\Models\Usuario;
 use App\Requests\UsuarioLoginRequest;
+use App\Requests\UsuarioRegisterRequest;
 
 class UsuarioController extends Controller
 {
@@ -64,5 +65,34 @@ class UsuarioController extends Controller
     private function encryption(string $string) : string
     {
 	    return md5($string);
+    }
+
+    public function register(array $usuario)
+    {
+        $rules = UsuarioRegisterRequest::rules($usuario);
+        if($rules !== true) {
+            $this->setResponse(["success" => false, "msg" => $rules]);
+        } else {
+            $usuario['senha'] = $this->encryption($usuario['senha']);
+            empty($usuario['naturalidade']) ? $usuario['naturalidade'] = NULL : '';
+            !isset($usuario['email']) ? $usuario['email'] = NULL : '';
+            $usuario['data_nascimento']  = date('Y-m-d', strtotime($usuario['data_nascimento']));
+
+            if($this->usuario->valueExist("pessoa", "cpf", $usuario["cpf"])) {
+                $this->setResponse(["success" => false, "msg" => [["CPF já cadastrado!"]]]);
+            } else if($this->usuario->valueExist("pessoa","rg", $usuario["rg"])) {
+                $this->setResponse(["success" => false, "msg" => [["RG já cadastrado!"]]]);
+            } else if($usuario['email'] != NULL) {
+                if($this->usuario->valueExist("pessoa","email", $usuario["email"])) {
+                    $this->setResponse(["success" => false, "msg" => [["E-mail já cadastrado!"]]]);
+                } else {
+                    $this->setResponse(["success" => true, "msg" => $this->usuario->register($usuario)]);
+                }
+            } else {
+                $this->setResponse(["success" => true, "msg" => $this->usuario->register($usuario)]);
+            }
+        }
+
+        return $this->getResponse();
     }
 }

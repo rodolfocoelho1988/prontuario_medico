@@ -1,0 +1,131 @@
+{% extends 'template.tpl.html' %}
+{% block title %}Adicionar um Médico - SysMedic{% endblock %}
+
+{% block sidebar %}
+{% include "sidebar.tpl.html" %}
+{% endblock %}
+
+{% block content %}
+{% if not session %}
+<script>window.location.href = '/login'</script>
+{% endif %}
+<main class="mn-inner">
+    <div class="row">
+        <div class="col s12">
+            <div class="page-title">Novo Médico</div>
+        </div>
+        <div class="col s12 m12 l12">
+            <div class="card">
+                <div class="card-content">
+                    <form id="register-form" action="/medico/cadastrar">
+                        <div class="row">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
+                                    <label for="first_name">Nome</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input placeholder="" name="usuario[data_nascimento]" type="text" class="datepicker">
+                                    <label for="dataNascimento">Data de nascimento</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="CPF" name="usuario[cpf]" id="cpf" type="text">
+                                    <label for="cpf">CPF</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input placeholder="RG" name="usuario[rg]" id="rg" type="text">
+                                    <label for="rg">RG</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="CRM" name="medico[crm]" id="crm" type="text">
+                                    <label for="crm">CRM</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input placeholder="Senha" name="usuario[senha]" id="senha" type="password">
+                                    <label for="senha">Senha</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="Naturalidade" name="usuario[naturalidade]" id="naturalidade" type="text">
+                                    <label for="naturalidade">Naturalidade</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <select id="nacionalidade" name="usuario[nacionalidade_id]">
+                                        <option value="" disabled selected>-- Selecione</option>
+                                        {% for nacionalidade in nacionalidades %}
+                                        <option value="{{ nacionalidade.id }}">{{ nacionalidade.nome }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label>Nacionalidade</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
+                                    <label for="rua">Rua</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input placeholder="Número" name="endereco[numero]" id="numero" type="number">
+                                    <label for="numero">Número</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
+                                    <label for="bairro">Bairro</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input placeholder="Complemento" name="endereco[complemento]" id="complemento" type="text">
+                                    <label for="complemento">Complemento</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <select id="estado" name="endereco[estado]" onchange="sysmedic.city.get($('#estado').val())">
+                                        <option value="" disabled selected>-- Selecione</option>
+                                        {% for estado in estados %}
+                                        <option value="{{ estado.id }}">{{ estado.nome }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label>Estado</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <select id="cidade" name="endereco[cidade_id]">
+                                        <option value="" disabled selected>-- Selecione</option>
+                                    </select>
+                                    <label>Cidade</label>
+                                </div>
+                            </div>
+                            <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.register()">Cadastrar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+<div class="left-sidebar-hover"></div>
+{% endblock %}
+
+{% block modulejs %}
+<script type="text/javascript" src="/js/module/ajax.js"></script>
+<script type="text/javascript" src="/js/module/city.js"></script>
+<script type="text/javascript" src="/js/module/doctor.js"></script>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+<script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+{% endblock %}
+
+{% block scriptjs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        sysmedic.doctor.datepicker()
+    });
+</script>
+{% endblock %}
