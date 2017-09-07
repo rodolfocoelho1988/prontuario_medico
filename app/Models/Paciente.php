@@ -33,12 +33,13 @@ class Paciente extends Model
     public function login(string $login, string $password)
     {
         $db = self::getInstance();
+        // Preciso definir o que vou listar do banco do paciente;
         $db = $db->prepare("SELECT t1.*, t2.* FROM pessoa as t1 INNER JOIN paciente as t2 ON (t2.pessoa_id = t1.id) WHERE t1.email = :login AND t1.senha = :password");
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();
         if($db->rowCount())
-            return $db->fetchAll(\PDO::FETCH_CLASS);
+            return $db->fetchAll(\PDO::FETCH_CLASS)[0];
         return false;
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Models\Medico;
-use App\Models\Paciente;
+use App\Models\Medico as Medico;
+use App\Models\Paciente as Paciente;
+use App\Models\Secretaria;
 use App\Models\Usuario;
 use App\Requests\UsuarioLoginRequest;
 
@@ -21,10 +22,11 @@ class UsuarioController extends Controller
 	}
 
     /**
-     * Login do usuário
-     * @return array
+     * Efetua o login e verifica qual é o tipo de usuário que está autenticando no sistema
+     * @param \Klein\Response $response
+     * @return string
      */
-	public function login(\Klein\Response $response)
+	public function login(\Klein\Response $response) : string
     {
         $user = $_POST['user'];
         $rules = UsuarioLoginRequest::rules($user);
@@ -32,32 +34,35 @@ class UsuarioController extends Controller
             $response->code(302);
             $this->setResponse($rules);
         } else {
+            $user['password'] = $this->encryption($user['password']);
             if(isset($user['crm'])) {
-                $medico = new Medico();
-                if($user = $medico->login($user['crm'], $user['password'])) {
-                    @session_start();
-                    $_SESSION['user'] = $user;
-                    $this->setResponse(["Médico logado com sucesso!"]);
-                }
-                else {
-                    $response->code(302);
-                    $this->setResponse(["Falha ao autenticar os seus dados!"]);
-                }
+                $class = new Medico();
+                $column = 'crm';
             } else {
-                $paciente = new Paciente();
-                if($user = $paciente->login($user['email'], $user['password'])) {
+                $user["type"] == "paciente" ? $class = new Paciente() : $user["type"] == "secretaria" ? $class = new Secretaria() : $class = new Paciente();
+                $column = 'email';
+            }
+
+            if($user = $class->login($user["$column"], $user["password"])) {
                     @session_start();
                     $_SESSION['user'] = $user;
-                    $this->setResponse(["Paciente logado com sucesso!"]);
-                }
-                else {
+                    $this->setResponse(["Logado com sucesso!"]);
+            } else {
                     $response->code(302);
-                    $this->setResponse(["Falha ao autenticar os seus dados!"]);
-                }
+                    $this->setResponse(["error" => ["Falha ao autenticar os seus dados!"]]);
             }
         }
 
-
         return json_encode($this->getResponse());
+    }
+
+    /**
+     * Transforma uma string para criptografia md5
+     * @param string $string
+     * @return string
+     */
+    private function encryption(string $string) : string
+    {
+	    return md5($string);
     }
 }

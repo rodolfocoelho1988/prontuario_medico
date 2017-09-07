@@ -58,7 +58,7 @@ abstract class Model
 	{
 		try {
             if(!self::$objInstance) {
-                self::$objInstance = new \PDO("mysql:host=$this->server;dbname=$this->database_name", $this->username, $this->password);
+                self::$objInstance = new \PDO("mysql:host=$this->server;dbname=$this->database_name", $this->username, $this->password, $this->option);
                 self::$objInstance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
 		} catch(\Exception $e) {

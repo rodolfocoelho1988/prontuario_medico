@@ -74,6 +74,7 @@
     </div>
 </div>
 
+{{ block('sidebar') }}
 {{ block('content') }}
 
 <!-- JavaScript -->
@@ -91,6 +92,7 @@
         sysmedic.dashboard.counterup();
     });
 </script>
+{{ block('scriptjs') }}
 
 </body>
 </html>

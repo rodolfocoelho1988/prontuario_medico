@@ -26,4 +26,13 @@ class AgendamentoController extends Controller
         return $this->agendamento->getTotal();
     }
 
+    /**
+     * Todos os agendamentos do dia de cada médico (nome, quantidade, inicio, fim)
+     * @return array
+     */
+    public function getAllCountDoctorDay()
+    {
+        return $this->agendamento->getAllCountDoctorDay();
+    }
+
 }
