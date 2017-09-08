@@ -33,24 +33,27 @@ class MedicoController extends Controller
     /**
      * Primeiro cadastra endereço, usuario, medico
      */
-    public function register(Response $response)
+    public function create(Response $response)
     {
         $endereco = new EnderecoController();
         $pessoa = $_POST['usuario'];
 
-        $endereco = $endereco->register($_POST['endereco']);
+        $endereco = $endereco->create($_POST['endereco']);
 
+        // Verifica e o cadastro do endereço deu algum erro;
         if($endereco["success"] !== true) {
             $response->code(302);
             $this->setResponse($endereco["msg"]);
         } else {
-            $usuario['endereco_id'] = $endereco["msg"];
+            $pessoa['endereco_id'] = $endereco["msg"];
             $usuarioObj = new UsuarioController();
-            $pessoa = $usuarioObj->register($pessoa);
+            // Faz o cadastro de uma pessoa no banco;
+            $pessoa = $usuarioObj->create($pessoa);
+            // Verifica se o cadastro deu algum erro;
             if($pessoa["success"] !== true) {
                 $response->code(302);
                 // Se não cadastrou a pessoa, preciso deletar o endereço que foi salvo no banco de dados
-                Endereco::delete($usuario['endereco_id']);
+                Endereco::delete($pessoa['endereco_id']);
                 $this->setResponse($pessoa["msg"]);
             } else {
                 $medico = [
@@ -58,23 +61,40 @@ class MedicoController extends Controller
                     'pessoa_id' => $pessoa['msg']
                 ];
                 $rules = MedicoRegisterRequest::rules($medico);
+                // Verifico se todas as regras foram validadas;
                 if($rules !== true) {
                     $response->code(302);
                     $this->setResponse($rules);
-                    Endereco::delete($usuario['endereco_id']);
+                    // Se as regras não foram validas, preciso remover o endereço e a pessoa
+                    Endereco::delete($pessoa['endereco_id']);
                     Usuario::delete($medico['pessoa_id']);
                 } else {
+                    // Verifica se não existe outro médico com o mesmo CRM;
                     if($this->medico->valueExist("medico", "crm", $medico['crm'])) {
                         $this->setResponse(["msg" => [["CRM já cadastrado!"]]]);
-                        Endereco::delete($usuario['endereco_id']);
+                        // Se existe outro médico com o mesmo CRM, preciso deletar o endereço e a pessoa;
+                        Endereco::delete($pessoa['endereco_id']);
                         Usuario::delete($medico['pessoa_id']);
                     }
-                    if($this->medico->register($medico)) {
-                        $this->setResponse(["Médico cadastrado com sucesso!"]);
+                    if($medico_id = $this->medico->register($medico)) {
+                        // Se o médico cadastrou, vou adicionar os telefones;
+                        $telefone = new TelefoneController();
+                        $resultTelefone = $telefone->create($medico["pessoa_id"]);
+                        if($resultTelefone["success"] !== true) {
+                            $response->code(302);
+                            // Se as regras não foram validas, preciso remover o endereço e a pessoa e o médico
+                            Endereco::delete($pessoa['endereco_id']);
+                            Medico::delete($medico_id);
+                            Usuario::delete($medico['pessoa_id']);
+                            $this->setResponse($resultTelefone["msg"]);
+                        } else {
+                            $this->setResponse(["Médico cadastrado com sucesso!"]);
+                        }
                     } else {
                         $response->code(302);
+                        // Se não cadastrou o médico, preciso deletar o endereço e a pessoa;
                         $this->setResponse(["msg" => [["Falha ao cadastrar o médico!"]]]);
-                        Endereco::delete($usuario['endereco_id']);
+                        Endereco::delete($pessoa['endereco_id']);
                         Usuario::delete($medico['pessoa_id']);
                     }
                 }

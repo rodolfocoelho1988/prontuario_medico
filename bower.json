@@ -20,6 +20,7 @@
     "materialize": "0.97.7",
     "datatables": "^1.10.15",
     "material-preloader": "*",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47"
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "jquery-mask-plugin": "^1.14.11"
   }
 }

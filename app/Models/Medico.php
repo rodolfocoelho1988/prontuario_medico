@@ -75,4 +75,16 @@ class Medico extends Model
             return $database->lastInsertId();
         return false;
     }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public static function delete(int $id)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("DELETE FROM medico WHERE id = $id");
+        $db->execute();
+        return $db->rowCount();
+    }
 }

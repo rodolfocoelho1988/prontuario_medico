@@ -22,7 +22,7 @@ class EnderecoController extends Controller
      * @param array $endereco
      * @return array
      */
-    public function register(array $endereco)
+    public function create(array $endereco)
     {
         $rules = EnderecoRegisterRequest::rules($endereco);
         if($rules !== true) {

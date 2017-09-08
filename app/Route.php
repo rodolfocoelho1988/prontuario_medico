@@ -62,7 +62,7 @@ class Route
         });
         $this->route->respond('POST', '/medico/adicionar', function($request, $response) {
             $medico = new MedicoController();
-            echo json_encode($medico->register($response));
+            echo json_encode($medico->create($response));
         });
 
         /**

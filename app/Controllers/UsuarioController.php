@@ -67,7 +67,7 @@ class UsuarioController extends Controller
 	    return md5($string);
     }
 
-    public function register(array $usuario)
+    public function create(array $usuario)
     {
         $rules = UsuarioRegisterRequest::rules($usuario);
         if($rules !== true) {

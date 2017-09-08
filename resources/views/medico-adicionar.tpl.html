@@ -22,31 +22,31 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
-                                    <label for="first_name">Nome</label>
+                                    <label for="first_name">Nome *</label>
                                 </div>
                                 <div class="input-field col s6">
-                                    <input placeholder="" name="usuario[data_nascimento]" type="text" class="datepicker">
-                                    <label for="dataNascimento">Data de nascimento</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="CPF" name="usuario[cpf]" id="cpf" type="text">
-                                    <label for="cpf">CPF</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input placeholder="RG" name="usuario[rg]" id="rg" type="text">
-                                    <label for="rg">RG</label>
+                                    <input placeholder="Data de nascimento *" name="usuario[data_nascimento]" id="dataNascimento" type="text" class="datepicker">
+                                    <label for="dataNascimento">Data de nascimento *</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <input placeholder="CRM" name="medico[crm]" id="crm" type="text">
-                                    <label for="crm">CRM</label>
+                                    <input placeholder="CPF *" name="usuario[cpf]" id="cpf" type="text">
+                                    <label for="cpf">CPF *</label>
                                 </div>
                                 <div class="input-field col s6">
-                                    <input placeholder="Senha" name="usuario[senha]" id="senha" type="password">
-                                    <label for="senha">Senha</label>
+                                    <input placeholder="RG *" name="usuario[rg]" id="rg" type="text">
+                                    <label for="rg">RG *</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input placeholder="CRM *" name="medico[crm]" id="crm" type="text">
+                                    <label for="crm">CRM *</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input placeholder="Senha *" name="usuario[senha]" id="senha" type="password">
+                                    <label for="senha">Senha *</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -61,13 +61,13 @@
                                         <option value="{{ nacionalidade.id }}">{{ nacionalidade.nome }}</option>
                                         {% endfor %}
                                     </select>
-                                    <label>Nacionalidade</label>
+                                    <label>Nacionalidade *</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s4">
                                     <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
-                                    <label for="rua">Rua</label>
+                                    <label for="rua">Rua *</label>
                                 </div>
                                 <div class="input-field col s4">
                                     <input placeholder="Número" name="endereco[numero]" id="numero" type="number">
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="input-field col s4">
                                     <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
-                                    <label for="bairro">Bairro</label>
+                                    <label for="bairro">Bairro *</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -90,15 +90,39 @@
                                         <option value="{{ estado.id }}">{{ estado.nome }}</option>
                                         {% endfor %}
                                     </select>
-                                    <label>Estado</label>
+                                    <label>Estado *</label>
                                 </div>
                                 <div class="input-field col s4">
                                     <select id="cidade" name="endereco[cidade_id]">
                                         <option value="" disabled selected>-- Selecione</option>
                                     </select>
-                                    <label>Cidade</label>
+                                    <label>Cidade *</label>
                                 </div>
                             </div>
+
+                            <div id="telefone-modal" class="modal">
+                                <div class="modal-content">
+                                    <h4>Adicionar telefones</h4>
+                                    <div id="telefone-add" class="row">
+                                        <div class="input-field col s4">
+                                            <select class='browser-default' name="telefone[][tipo]">
+                                                <option value="1">Residencial</option>
+                                                <option value="2">Celular</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s8">
+                                            <input placeholder="Telefone" name="telefone[][numero]" id="telefone" type="text" class="telefone">
+                                            <label for="telefone">Telefone</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="left waves-effect waves-green btn-flat" onclick="sysmedic.telephone.add()">+ telefone</a>
+                                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                </div>
+                            </div>
+
+                            <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Adicionar telefone</a>
                             <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.register()">Cadastrar</a>
                         </div>
                     </form>
@@ -115,17 +139,20 @@
 <script type="text/javascript" src="/js/module/ajax.js"></script>
 <script type="text/javascript" src="/js/module/city.js"></script>
 <script type="text/javascript" src="/js/module/doctor.js"></script>
+<script type="text/javascript" src="/js/module/telephone.js"></script>
 {% endblock %}
 
 {% block javascript %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
 <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/bower_components/jquery-mask-plugin/src/jquery.mask.js"></script>
 {% endblock %}
 
 {% block scriptjs %}
 <script type="text/javascript">
     $(document).ready(function() {
-        sysmedic.doctor.datepicker()
+        sysmedic.doctor.datepicker();
+        sysmedic.telephone.mask();
     });
 </script>
 {% endblock %}
