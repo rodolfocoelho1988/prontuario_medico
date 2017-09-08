@@ -53,7 +53,7 @@ class MedicoController extends Controller
             if($pessoa["success"] !== true) {
                 $response->code(302);
                 // Se não cadastrou a pessoa, preciso deletar o endereço que foi salvo no banco de dados
-                Endereco::delete($pessoa['endereco_id']);
+                Endereco::delete($endereco["msg"]);
                 $this->setResponse($pessoa["msg"]);
             } else {
                 $medico = [
@@ -66,15 +66,15 @@ class MedicoController extends Controller
                     $response->code(302);
                     $this->setResponse($rules);
                     // Se as regras não foram validas, preciso remover o endereço e a pessoa
-                    Endereco::delete($pessoa['endereco_id']);
                     Usuario::delete($medico['pessoa_id']);
+                    Endereco::delete($endereco["msg"]);
                 } else {
                     // Verifica se não existe outro médico com o mesmo CRM;
                     if($this->medico->valueExist("medico", "crm", $medico['crm'])) {
                         $this->setResponse(["msg" => [["CRM já cadastrado!"]]]);
                         // Se existe outro médico com o mesmo CRM, preciso deletar o endereço e a pessoa;
-                        Endereco::delete($pessoa['endereco_id']);
                         Usuario::delete($medico['pessoa_id']);
+                        Endereco::delete($endereco["msg"]);
                     }
                     if($medico_id = $this->medico->register($medico)) {
                         // Se o médico cadastrou, vou adicionar os telefones;
@@ -83,9 +83,9 @@ class MedicoController extends Controller
                         if($resultTelefone["success"] !== true) {
                             $response->code(302);
                             // Se as regras não foram validas, preciso remover o endereço e a pessoa e o médico
-                            Endereco::delete($pessoa['endereco_id']);
                             Medico::delete($medico_id);
                             Usuario::delete($medico['pessoa_id']);
+                            Endereco::delete($endereco["msg"]);
                             $this->setResponse($resultTelefone["msg"]);
                         } else {
                             $this->setResponse(["Médico cadastrado com sucesso!"]);
@@ -94,8 +94,8 @@ class MedicoController extends Controller
                         $response->code(302);
                         // Se não cadastrou o médico, preciso deletar o endereço e a pessoa;
                         $this->setResponse(["msg" => [["Falha ao cadastrar o médico!"]]]);
-                        Endereco::delete($pessoa['endereco_id']);
                         Usuario::delete($medico['pessoa_id']);
+                        Endereco::delete($endereco["msg"]);
                     }
                 }
             }

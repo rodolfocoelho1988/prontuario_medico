@@ -75,6 +75,8 @@ class UsuarioController extends Controller
 
     public function create(array $usuario)
     {
+        // CPF somente números;
+        $usuario["cpf"] = preg_replace( '/[^0-9]/is', '', $usuario["cpf"]);
         $rules = UsuarioRegisterRequest::rules($usuario);
         if($rules !== true) {
             $this->setResponse(["success" => false, "msg" => $rules]);
@@ -88,6 +90,8 @@ class UsuarioController extends Controller
                 $this->setResponse(["success" => false, "msg" => [["CPF já cadastrado!"]]]);
             } else if($this->usuario->valueExist("pessoa","rg", $usuario["rg"])) {
                 $this->setResponse(["success" => false, "msg" => [["RG já cadastrado!"]]]);
+            } else if(!$this->cpfValidator($usuario['cpf'])) {
+                $this->setResponse(["success" => false, "msg" => [["CPF Inválido!"]]]);
             } else if($usuario['email'] != NULL) {
                 if($this->usuario->valueExist("pessoa","email", $usuario["email"])) {
                     $this->setResponse(["success" => false, "msg" => [["E-mail já cadastrado!"]]]);
@@ -100,5 +104,26 @@ class UsuarioController extends Controller
         }
 
         return $this->getResponse();
+    }
+
+    private function cpfValidator(string $cpf)
+    {
+        // Verifica se foi informado todos os digitos corretamente
+        if(strlen($cpf) != 11)
+            return false;
+
+        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+        if(preg_match('/(\d)\1{10}/', $cpf))
+            return false;
+
+        // Faz o calculo para validar o CPF
+        for($t = 9; $t < 11; $t++) {
+            for($d = 0, $c = 0; $c < $t; $c++)
+                $d += $cpf{$c} * (($t + 1) - $c);
+            $d = ((10 * $d) % 11) % 10;
+            if($cpf{$c} != $d)
+                return false;
+        }
+        return true;
     }
 }

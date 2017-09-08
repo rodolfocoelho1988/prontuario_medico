@@ -111,7 +111,7 @@
                                             </select>
                                         </div>
                                         <div class="input-field col s8">
-                                            <input placeholder="Telefone" name="telefone[][numero]" id="telefone" type="text" class="telefone">
+                                            <input placeholder="Telefone" name="telefone[][numero]" id="telefone0" type="text">
                                             <label for="telefone">Telefone</label>
                                         </div>
                                     </div>
@@ -140,6 +140,7 @@
 <script type="text/javascript" src="/js/module/city.js"></script>
 <script type="text/javascript" src="/js/module/doctor.js"></script>
 <script type="text/javascript" src="/js/module/telephone.js"></script>
+<script type="text/javascript" src="/js/module/user.js"></script>
 {% endblock %}
 
 {% block javascript %}
@@ -152,7 +153,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         sysmedic.doctor.datepicker();
-        sysmedic.telephone.mask();
+        sysmedic.telephone.mask(0);
+        sysmedic.user.maskCPF();
     });
 </script>
 {% endblock %}

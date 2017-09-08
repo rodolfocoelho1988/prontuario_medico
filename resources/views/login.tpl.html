@@ -16,7 +16,7 @@
                             <div class="row">
                                 <form id="login-form" class="col s12">
                                     <div class="input-field col s12">
-                                        <select id="type" name="user[type]" onchange="sysmedic.usuario.changePerfil()">
+                                        <select id="type" name="user[type]" onchange="sysmedic.user.changePerfil()">
                                             <option disabled selected>Seu perfil?</option>
                                             <option value="paciente">Paciente</option>
                                             <option value="medico">Médico</option>
@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="col s12 right-align m-t-sm">
                                         <a href="/registrar" class="waves-effect waves-grey btn-flat">registrar</a>
-                                        <a id="logar" onclick="sysmedic.usuario.login()" class="waves-effect waves-light btn teal">logar</a>
+                                        <a id="logar" onclick="sysmedic.user.login()" class="waves-effect waves-light btn teal">logar</a>
                                     </div>
                                 </form>
                             </div>
@@ -48,5 +48,5 @@
 
 {% block modulejs %}
 <script type="text/javascript" src="/js/module/ajax.js"></script>
-<script type="text/javascript" src="/js/module/usuario.js"></script>
+<script type="text/javascript" src="/js/module/user.js"></script>
 {% endblock %}

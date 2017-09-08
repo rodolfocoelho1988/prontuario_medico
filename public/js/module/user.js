@@ -1,6 +1,6 @@
 var sysmedic = sysmedic || {};
 
-sysmedic.usuario = (function() {
+sysmedic.user = (function() {
 
     var changePerfil = function() {
         var valor = $("#type").val();
@@ -36,9 +36,14 @@ sysmedic.usuario = (function() {
         sysmedic.ajax.send('POST', '/login', form.serialize(), 'json', sysmedic.ajax.beforeSend('loading', 'logar'), error, success);
     };
 
+    var maskCPF = function() {
+        $("#cpf").mask('000.000.000-00');
+    };
+
     return {
         changePerfil: changePerfil,
-        login: login
+        login: login,
+        maskCPF: maskCPF
     };
 
 }());
