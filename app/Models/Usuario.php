@@ -16,7 +16,7 @@ class Usuario extends Model
      * @param array $usuario
      * @return bool|string
      */
-    public function register(array $usuario)
+    public function create(array $usuario)
     {
         $database = self::getInstance();
         $db = $database->prepare("INSERT INTO pessoa (nome, endereco_id, cpf, rg, data_nascimento, naturalidade, nacionalidade_id, email, senha) VALUES (:nome, :endereco_id, :cpf, :rg, :data_nascimento, :naturalidade, :nacionalidade_id, :email, :senha)");

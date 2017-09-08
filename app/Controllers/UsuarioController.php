@@ -40,7 +40,13 @@ class UsuarioController extends Controller
                 $class = new Medico();
                 $column = 'crm';
             } else {
-                $user["type"] == "paciente" ? $class = new Paciente() : $user["type"] == "secretaria" ? $class = new Secretaria() : $class = new Paciente();
+                if($user["type"] == "paciente") {
+                    $class = new Paciente();
+                } else if($user["type"] == "secretaria") {
+                    $class = new Secretaria();
+                } else {
+                    $class = new Paciente();
+                }
                 $column = 'email';
             }
 
@@ -86,10 +92,10 @@ class UsuarioController extends Controller
                 if($this->usuario->valueExist("pessoa","email", $usuario["email"])) {
                     $this->setResponse(["success" => false, "msg" => [["E-mail já cadastrado!"]]]);
                 } else {
-                    $this->setResponse(["success" => true, "msg" => $this->usuario->register($usuario)]);
+                    $this->setResponse(["success" => true, "msg" => $this->usuario->create($usuario)]);
                 }
             } else {
-                $this->setResponse(["success" => true, "msg" => $this->usuario->register($usuario)]);
+                $this->setResponse(["success" => true, "msg" => $this->usuario->create($usuario)]);
             }
         }
 
