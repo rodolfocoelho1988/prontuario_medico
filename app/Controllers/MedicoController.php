@@ -78,8 +78,7 @@ class MedicoController extends Controller
                         // Se existe outro médico com o mesmo CRM, preciso deletar o endereço e a pessoa;
                         Usuario::delete($medico['pessoa_id']);
                         Endereco::delete($endereco["msg"]);
-                    }
-                    if($medico_id = $this->medico->register($medico)) {
+                    } else if($medico_id = $this->medico->register($medico)) {
                         // Se o médico cadastrou, vou adicionar os telefones;
                         $telefone = new TelefoneController();
                         $resultTelefone = $telefone->create($medico["pessoa_id"]);
