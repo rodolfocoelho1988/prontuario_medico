@@ -107,10 +107,7 @@ class MedicoController extends Controller
         return $this->getResponse();
     }
 
-    /**
-     * Busca todos os médicos
-     * @return array
-     */
+
     public function getAll()
     {
         $medicos = $this->medico->getAll();

@@ -13,7 +13,7 @@ sysmedic.telephone = (function() {
             '                    </div>\n' +
             '                    <div class="input-field col s8">\n' +
             '                        <input placeholder="Telefone" name="telefone[][numero]" id="telefone'+i+'"'+' type="text">'+
-            '                        <label for="telefone\'+i+\'"\'+\'>Telefone</label>\n' +
+            '                        <label for="telefone'+i+'"'+'>Telefone</label>\n' +
             '                    </div>';
         $("#telefone-add").append(html);
         mask(i);

@@ -46,4 +46,34 @@ class Paciente extends Model
         }
         return false;
     }
+
+    /**
+     * @param array $paciente
+     * @return bool|string
+     */
+    public function create(array $paciente)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("INSERT INTO paciente (nome_pai, nome_mae, tipo_sanguineo, pessoa_id) VALUES (:nome_pai, :nome_mae, :tipo_sanguineo, :pessoa_id)");
+        $db->bindParam(":nome_pai", $paciente['nome_pai']);
+        $db->bindParam(":nome_mae", $paciente['nome_mae']);
+        $db->bindParam(":tipo_sanguineo", $paciente['tipo_sanguineo']);
+        $db->bindParam(":pessoa_id", $paciente['pessoa_id']);
+        $db->execute();
+        if($db->rowCount())
+            return $database->lastInsertId();
+        return false;
+    }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public static function delete(int $id)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("DELETE FROM paciente WHERE id = $id");
+        $db->execute();
+        return $db->rowCount();
+    }
 }

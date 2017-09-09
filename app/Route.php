@@ -8,6 +8,7 @@ use App\Controllers\EspecialidadeController;
 use App\Controllers\EstadoController;
 use App\Controllers\MedicoController;
 use App\Controllers\NacionalidadeController;
+use App\Controllers\PacienteController;
 use App\Controllers\TelefoneController;
 use App\Controllers\UsuarioController;
 use \App\Libs\Twig as Twig;
@@ -68,6 +69,23 @@ class Route
         $this->route->respond('POST', '/medico/adicionar', function($request, $response) {
             $medico = new MedicoController();
             echo json_encode($medico->create($response));
+        });
+
+        /**
+         * Paciente
+         */
+        $this->route->respond('GET', '/paciente/adicionar', function() {
+            $nacionalidade = new NacionalidadeController();
+            $estado = new EstadoController();
+            $array = [
+                "nacionalidades" => $nacionalidade->getAll(),
+                "estados" => $estado->getAll()
+            ];
+            echo $this->twig->render('paciente-adicionar.tpl.html', $array);
+        });
+        $this->route->respond('POST', '/paciente/adicionar', function($request, $response) {
+            $paciente = new PacienteController();
+            echo json_encode($paciente->create($response));
         });
 
         /**
