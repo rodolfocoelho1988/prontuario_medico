@@ -18,11 +18,11 @@ class CidadeController extends Controller
     /**
      * Busca todas as cidades de um determinado estado.
      * @param int $estado
-     * @return string
+     * @return array
      */
     public function get(int $estado)
     {
-        return json_encode($this->cidade->get($estado));
+        return $this->cidade->get($estado);
     }
 
 }

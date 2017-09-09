@@ -18,6 +18,10 @@ class TelefoneController extends Controller
         $this->telefone = new Telefone();
     }
 
+    /**
+     * @param int $usuario_id
+     * @return array
+     */
     public function create(int $usuario_id)
     {
         $telefones = $_POST['telefone'];
@@ -59,4 +63,13 @@ class TelefoneController extends Controller
         return ["success" => true, "msg" => $telefones_ids];
     }
 
+    /**
+     * Busca todos os telefones de uma determinada pessoa
+     * @param int $pessoa
+     * @return mixed
+     */
+    public function get(int $pessoa)
+    {
+        return $this->telefone->get($pessoa);
+    }
 }

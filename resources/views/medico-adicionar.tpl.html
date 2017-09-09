@@ -8,129 +8,134 @@
 {% block content %}
 {% if not session %}
 <script>window.location.href = '/login'</script>
-{% endif %}
-<main class="mn-inner">
-    <div class="row">
-        <div class="col s12">
-            <div class="page-title">Novo Médico</div>
-        </div>
-        <div class="col s12 m12 l12">
-            <div class="card">
-                <div class="card-content">
-                    <form id="register-form" action="/medico/cadastrar">
-                        <div class="row">
+{% else %}
+    {% if session.perfil == 'secretaria' %}
+    <main class="mn-inner">
+        <div class="row">
+            <div class="col s12">
+                <div class="page-title">Novo Médico</div>
+            </div>
+            <div class="col s12 m12 l12">
+                <div class="card">
+                    <div class="card-content">
+                        <form id="register-form" action="/medico/cadastrar">
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
-                                    <label for="first_name">Nome *</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input placeholder="Data de nascimento *" name="usuario[data_nascimento]" id="dataNascimento" type="text" class="datepicker">
-                                    <label for="dataNascimento">Data de nascimento *</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="CPF *" name="usuario[cpf]" id="cpf" type="text">
-                                    <label for="cpf">CPF *</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input placeholder="RG *" name="usuario[rg]" id="rg" type="text">
-                                    <label for="rg">RG *</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="CRM *" name="medico[crm]" id="crm" type="text">
-                                    <label for="crm">CRM *</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input placeholder="Senha *" name="usuario[senha]" id="senha" type="password">
-                                    <label for="senha">Senha *</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="Naturalidade" name="usuario[naturalidade]" id="naturalidade" type="text">
-                                    <label for="naturalidade">Naturalidade</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <select id="nacionalidade" name="usuario[nacionalidade_id]">
-                                        <option value="" disabled selected>-- Selecione</option>
-                                        {% for nacionalidade in nacionalidades %}
-                                        <option value="{{ nacionalidade.id }}">{{ nacionalidade.nome }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <label>Nacionalidade *</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
-                                    <label for="rua">Rua *</label>
-                                </div>
-                                <div class="input-field col s4">
-                                    <input placeholder="Número" name="endereco[numero]" id="numero" type="number">
-                                    <label for="numero">Número</label>
-                                </div>
-                                <div class="input-field col s4">
-                                    <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
-                                    <label for="bairro">Bairro *</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <input placeholder="Complemento" name="endereco[complemento]" id="complemento" type="text">
-                                    <label for="complemento">Complemento</label>
-                                </div>
-                                <div class="input-field col s4">
-                                    <select id="estado" name="endereco[estado]" onchange="sysmedic.city.get($('#estado').val())">
-                                        <option value="" disabled selected>-- Selecione</option>
-                                        {% for estado in estados %}
-                                        <option value="{{ estado.id }}">{{ estado.nome }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <label>Estado *</label>
-                                </div>
-                                <div class="input-field col s4">
-                                    <select id="cidade" name="endereco[cidade_id]">
-                                        <option value="" disabled selected>-- Selecione</option>
-                                    </select>
-                                    <label>Cidade *</label>
-                                </div>
-                            </div>
-
-                            <div id="telefone-modal" class="modal">
-                                <div class="modal-content">
-                                    <h4>Adicionar telefones</h4>
-                                    <div id="telefone-add" class="row">
-                                        <div class="input-field col s4">
-                                            <select class='browser-default' name="telefone[][tipo]">
-                                                <option value="1">Residencial</option>
-                                                <option value="2">Celular</option>
-                                            </select>
-                                        </div>
-                                        <div class="input-field col s8">
-                                            <input placeholder="Telefone" name="telefone[][numero]" id="telefone0" type="text">
-                                            <label for="telefone">Telefone</label>
-                                        </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
+                                        <label for="first_name">Nome *</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="Data de nascimento *" name="usuario[data_nascimento]" id="dataNascimento" type="text" class="datepicker">
+                                        <label for="dataNascimento">Data de nascimento *</label>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <a class="left waves-effect waves-green btn-flat" onclick="sysmedic.telephone.add()">+ telefone</a>
-                                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="CPF *" name="usuario[cpf]" id="cpf" type="text">
+                                        <label for="cpf">CPF *</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="RG *" name="usuario[rg]" id="rg" type="text">
+                                        <label for="rg">RG *</label>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="CRM *" name="medico[crm]" id="crm" type="text">
+                                        <label for="crm">CRM *</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input placeholder="Senha *" name="usuario[senha]" id="senha" type="password">
+                                        <label for="senha">Senha *</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input placeholder="Naturalidade" name="usuario[naturalidade]" id="naturalidade" type="text">
+                                        <label for="naturalidade">Naturalidade</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <select id="nacionalidade" name="usuario[nacionalidade_id]">
+                                            <option value="" disabled selected>-- Selecione</option>
+                                            {% for nacionalidade in nacionalidades %}
+                                            <option value="{{ nacionalidade.id }}">{{ nacionalidade.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label>Nacionalidade *</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s4">
+                                        <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
+                                        <label for="rua">Rua *</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="Número" name="endereco[numero]" id="numero" type="number">
+                                        <label for="numero">Número</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
+                                        <label for="bairro">Bairro *</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s4">
+                                        <input placeholder="Complemento" name="endereco[complemento]" id="complemento" type="text">
+                                        <label for="complemento">Complemento</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <select id="estado" name="endereco[estado]" onchange="sysmedic.city.get($('#estado').val())">
+                                            <option value="" disabled selected>-- Selecione</option>
+                                            {% for estado in estados %}
+                                            <option value="{{ estado.id }}">{{ estado.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <label>Estado *</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <select id="cidade" name="endereco[cidade_id]">
+                                            <option value="" disabled selected>-- Selecione</option>
+                                        </select>
+                                        <label>Cidade *</label>
+                                    </div>
+                                </div>
 
-                            <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Adicionar telefone</a>
-                            <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.register()">Cadastrar</a>
-                        </div>
-                    </form>
+                                <div id="telefone-modal" class="modal">
+                                    <div class="modal-content">
+                                        <h4>Adicionar telefones</h4>
+                                        <div id="telefone-add" class="row">
+                                            <div class="input-field col s4">
+                                                <select class='browser-default' name="telefone[][tipo]">
+                                                    <option value="1">Residencial</option>
+                                                    <option value="2">Celular</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field col s8">
+                                                <input placeholder="Telefone" name="telefone[][numero]" id="telefone0" type="text">
+                                                <label for="telefone0">Telefone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a class="left waves-effect waves-green btn-flat" onclick="sysmedic.telephone.add()">+ telefone</a>
+                                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                    </div>
+                                </div>
+
+                                <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Telefone <i class="material-icons right">phone</i></a>
+                                <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.register()">Cadastrar <i class="material-icons right">send</i></a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+    {% else %}
+        <script>window.location.href = '/'</script>
+    {% endif %}
+{% endif %}
 </div>
 <div class="left-sidebar-hover"></div>
 {% endblock %}
@@ -155,6 +160,8 @@
         sysmedic.doctor.datepicker();
         sysmedic.telephone.mask(0);
         sysmedic.user.maskCPF();
+        $('.medico').addClass('active');
+        $('.collapsible').collapsible('open', 0);
     });
 </script>
 {% endblock %}

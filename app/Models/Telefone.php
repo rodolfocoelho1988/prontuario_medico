@@ -39,4 +39,16 @@ class Telefone extends Model
         $db->execute();
         return $db->rowCount();
     }
+
+    /**
+     * @param int $pessoa
+     * @return array
+     */
+    public function get(int $pessoa)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("SELECT * FROM telefone WHERE pessoa_id = $pessoa");
+        $db->execute();
+        return $db->fetchAll(\PDO::FETCH_CLASS);
+    }
 }

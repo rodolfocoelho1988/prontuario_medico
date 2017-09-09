@@ -106,6 +106,11 @@ class UsuarioController extends Controller
         return $this->getResponse();
     }
 
+    /**
+     * Valida o CPF de uma pessoa
+     * @param string $cpf
+     * @return bool
+     */
     private function cpfValidator(string $cpf)
     {
         // Verifica se foi informado todos os digitos corretamente

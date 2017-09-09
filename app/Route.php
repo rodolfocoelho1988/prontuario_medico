@@ -2,13 +2,13 @@
 
 namespace App;
 
-use App\Controllers\AgendamentoController;
 use App\Controllers\CidadeController;
 use App\Controllers\Dashboard;
+use App\Controllers\EspecialidadeController;
 use App\Controllers\EstadoController;
 use App\Controllers\MedicoController;
 use App\Controllers\NacionalidadeController;
-use App\Controllers\PacienteController;
+use App\Controllers\TelefoneController;
 use App\Controllers\UsuarioController;
 use \App\Libs\Twig as Twig;
 use \Klein\Klein as Klein;
@@ -51,6 +51,11 @@ class Route
         /**
          * Médico
          */
+        $this->route->respond('GET', '/medico', function() {
+            $medico = new MedicoController();
+            $medicos = $medico->getAll();
+            echo $this->twig->render('medico.tpl.html', ["medicos" => $medicos]);
+        });
         $this->route->respond('GET', '/medico/adicionar', function() {
             $nacionalidade = new NacionalidadeController();
             $estado = new EstadoController();
@@ -66,11 +71,27 @@ class Route
         });
 
         /**
-         * CidadeController
+         * Cidade
          */
         $this->route->respond('GET', '/cidade/[i:id]', function($request) {
             $cidade = new CidadeController();
-            echo $cidade->get($request->id);
+            echo json_encode($cidade->get($request->id));
+        });
+
+        /**
+         * Telefone
+         */
+        $this->route->respond('GET', '/telefone/[i:id]', function($request) {
+            $telefone = new TelefoneController();
+            echo json_encode($telefone->get($request->id));
+        });
+
+        /**
+         * Especialidade
+         */
+        $this->route->respond('GET', '/especialidade/[i:id]', function($request) {
+            $especialidade = new EspecialidadeController();
+            echo json_encode($especialidade->get($request->id));
         });
     }
 

@@ -38,8 +38,12 @@ class Paciente extends Model
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();
-        if($db->rowCount())
-            return $db->fetchAll(\PDO::FETCH_CLASS)[0];
+        if($db->rowCount()) {
+            $result = $db->fetchAll(\PDO::FETCH_CLASS)[0];
+            $result->perfil = "paciente";
+            return $result;
+
+        }
         return false;
     }
 }

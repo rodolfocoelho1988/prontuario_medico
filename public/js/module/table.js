@@ -2,9 +2,9 @@ var sysmedic = sysmedic || {};
 
 sysmedic.table = (function() {
 
-    // Lista de agendamento do dia do dashboard
-    var scheduleDay = function() {
-        $('#scheduleDay').DataTable({
+    // Inicializar
+    var init = function() {
+        $('#datatable').DataTable({
             language: language()
         });
         $('.dataTables_length select').addClass('browser-default');
@@ -26,7 +26,7 @@ sysmedic.table = (function() {
                 "sSortAscending": ": Ordenar colunas de forma ascendente",
                 "sSortDescending": ": Ordenar colunas de forma descendente"
             },
-            searchPlaceholder: 'Procurar agendamento',
+            searchPlaceholder: 'Procurar',
 
             sSearch: '',
             sLengthMenu: 'Mostrar _MENU_',
@@ -42,7 +42,7 @@ sysmedic.table = (function() {
     };
 
     return {
-        scheduleDay: scheduleDay,
+        init: init,
     };
 
 }());

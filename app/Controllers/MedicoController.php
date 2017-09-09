@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Endereco;
+use App\Models\Especialidade;
 use App\Models\Medico;
 use App\Models\Usuario;
 use App\Requests\MedicoRegisterRequest;
@@ -31,7 +32,9 @@ class MedicoController extends Controller
     }
 
     /**
-     * Primeiro cadastra endereço, usuario, medico
+     * Efetua os procedimentos necessário para o cadastrado de um médico
+     * @param Response $response
+     * @return array|string
      */
     public function create(Response $response)
     {
@@ -102,5 +105,19 @@ class MedicoController extends Controller
         }
 
         return $this->getResponse();
+    }
+
+    /**
+     * Busca todos os médicos
+     * @return array
+     */
+    public function getAll()
+    {
+        $medicos = $this->medico->getAll();
+        $especialidade = new Especialidade();
+        foreach($medicos as $key => $medico) {
+            $medicos[$key]->especialidades = $especialidade->get($medico->id);
+        }
+        return $medicos;
     }
 }
