@@ -97,4 +97,12 @@ class PacienteController extends Controller
         return $this->getResponse();
     }
 
+    /**
+     * Busca todos os pacientes
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->paciente->getAll();
+    }
 }

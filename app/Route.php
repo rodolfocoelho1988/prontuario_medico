@@ -74,6 +74,11 @@ class Route
         /**
          * Paciente
          */
+        $this->route->respond('GET', '/paciente', function() {
+            $paciente = new PacienteController();
+            $pacientes = $paciente->getAll();
+            echo $this->twig->render('paciente.tpl.html', ["pacientes" => $pacientes]);
+        });
         $this->route->respond('GET', '/paciente/adicionar', function() {
             $nacionalidade = new NacionalidadeController();
             $estado = new EstadoController();

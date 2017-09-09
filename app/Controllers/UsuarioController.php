@@ -73,6 +73,10 @@ class UsuarioController extends Controller
 	    return md5($string);
     }
 
+    /**
+     * @param array $usuario
+     * @return array|string
+     */
     public function create(array $usuario)
     {
         // CPF somente números;

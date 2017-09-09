@@ -23,31 +23,31 @@
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
-                                        <label for="first_name">Nome *</label>
+                                        <label for="first_name">Nome <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s6">
                                         <input placeholder="Data de nascimento *" name="usuario[data_nascimento]" id="dataNascimento" type="text" class="datepicker">
-                                        <label for="dataNascimento">Data de nascimento *</label>
+                                        <label for="dataNascimento">Data de nascimento <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input placeholder="CPF *" name="usuario[cpf]" id="cpf" type="text">
-                                        <label for="cpf">CPF *</label>
+                                        <label for="cpf">CPF <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s6">
                                         <input placeholder="RG *" name="usuario[rg]" id="rg" type="text">
-                                        <label for="rg">RG *</label>
+                                        <label for="rg">RG <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s6">
                                         <input placeholder="E-mail *" name="usuario[email]" id="email" type="email">
-                                        <label for="email">Email *</label>
+                                        <label for="email">Email <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s6">
                                         <input placeholder="Senha *" name="usuario[senha]" id="senha" type="password">
-                                        <label for="senha">Senha *</label>
+                                        <label for="senha">Senha <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -76,13 +76,13 @@
                                             <option value="{{ nacionalidade.id }}">{{ nacionalidade.nome }}</option>
                                             {% endfor %}
                                         </select>
-                                        <label>Nacionalidade *</label>
+                                        <label>Nacionalidade <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s4">
                                         <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
-                                        <label for="rua">Rua *</label>
+                                        <label for="rua">Rua <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s4">
                                         <input placeholder="Número" name="endereco[numero]" id="numero" type="number">
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="input-field col s4">
                                         <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
-                                        <label for="bairro">Bairro *</label>
+                                        <label for="bairro">Bairro <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -105,13 +105,13 @@
                                             <option value="{{ estado.id }}">{{ estado.nome }}</option>
                                             {% endfor %}
                                         </select>
-                                        <label>Estado *</label>
+                                        <label>Estado <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s4">
                                         <select id="cidade" name="endereco[cidade_id]">
                                             <option value="" disabled selected>-- Selecione</option>
                                         </select>
-                                        <label>Cidade *</label>
+                                        <label>Cidade <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
 
@@ -140,6 +140,7 @@
                                 <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Telefone <i class="material-icons right">phone</i></a>
                                 <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.paciente.register()">Cadastrar <i class="material-icons right">send</i></a>
                             </div>
+                            <div><span style='color: red'>*</span> - os campos são obrigatórios</div>
                         </form>
                     </div>
                 </div>
@@ -174,7 +175,7 @@
         sysmedic.paciente.datepicker();
         sysmedic.telephone.mask(0);
         sysmedic.user.maskCPF();
-        $('.medico').addClass('active');
+        $('.paciente').addClass('active');
         $('.collapsible').collapsible('open', 0);
     });
 </script>

@@ -106,14 +106,12 @@ class MedicoController extends Controller
         return $this->getResponse();
     }
 
-
+    /**
+     * Busca todos os médicos
+     * @return array
+     */
     public function getAll()
     {
-        $medicos = $this->medico->getAll();
-        $especialidade = new Especialidade();
-        foreach($medicos as $key => $medico) {
-            $medicos[$key]->especialidades = $especialidade->get($medico->id);
-        }
-        return $medicos;
+        return $this->medico->getAll();
     }
 }
