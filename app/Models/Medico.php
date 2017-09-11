@@ -5,14 +5,7 @@ namespace App\Models;
 class Medico extends Model
 {
     /**
-     * Medico constructor.$db = self::getInstance();
-        $db = $db->prepare("SELECT t1.*, t2.crm FROM pessoa as t1 INNER JOIN medico as t2 ON (t2.pessoa_id = t1.id) WHERE t2.crm = :login AND t1.senha = :password");
-        $db->bindParam(":login", $login);
-        $db->bindParam(":password", $password);
-        $db->execute();
-        if($db->rowCount())
-            return $db->fetchAll(\PDO::FETCH_CLASS)[0];
-        return false;
+     * Medico constructor.
      */
     public function __construct()
 	{

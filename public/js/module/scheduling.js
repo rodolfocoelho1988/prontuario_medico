@@ -1,6 +1,6 @@
 var sysmedic = sysmedic || {};
 
-sysmedic.paciente = (function() {
+sysmedic.scheduling = (function() {
 
     var create = function() {
         var form = $("#create-form");
@@ -20,7 +20,7 @@ sysmedic.paciente = (function() {
 
         var success = function(resp) {
             sysmedic.ajax.removeLoading('loading', 'register');
-            Materialize.toast("Cadastrado efetuado com sucesso!", 10000, 'rounded');
+            Materialize.toast("Cadastro efetuado com sucesso!", 10000, 'rounded');
             form.trigger("reset");
         };
 

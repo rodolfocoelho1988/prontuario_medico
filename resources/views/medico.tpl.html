@@ -9,10 +9,16 @@
 {% endblock %}
 
 {% block content %}
-{% if not session %}
+    {% set pode = false %}
+    {% for permissao in session.permissoes %}
+        {% if request.uri in permissao.url %}
+            {% set pode = true %}
+        {% endif %}
+    {% endfor %}
+
+{% if pode == false %}
 <script>window.location.href = '/login'</script>
-{% else %}
-{% if session.perfil == 'secretaria' %}
+{% endif %}
     <main class="mn-inner">
         <div class="row no-m-t no-m-b">
             <div class="col s12 m12 l12">
@@ -62,12 +68,8 @@
             <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
         </div>
     </div>
-    </div>
-    <div class="left-sidebar-hover"></div>
-    {% else %}
-    <script>window.location.href = '/'</script>
-    {% endif %}
-{% endif %}
+</div>
+<div class="left-sidebar-hover"></div>
 {% endblock %}
 {% block javascript %}
 <script type="text/javascript" src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>

@@ -2,18 +2,8 @@ var sysmedic = sysmedic || {};
 
 sysmedic.doctor = (function() {
 
-    var datepicker = function() {
-        $('.datepicker').pickadate({
-
-            yearRange: "c-100:c-20",
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: true, // Creates a dropdown of 15 years to control year
-
-        });
-    };
-
-    var register = function() {
-        var form = $("#register-form");
+    var create = function() {
+        var form = $("#create-form");
 
         var error = function(resp) {
             sysmedic.ajax.removeLoading('loading', 'register');
@@ -34,12 +24,11 @@ sysmedic.doctor = (function() {
             form.trigger("reset");
         };
 
-        sysmedic.ajax.send('POST', '/medico/adicionar', form.serialize(), 'json', sysmedic.ajax.beforeSend('loading', 'register'), error, success);
+        sysmedic.ajax.send('POST', form.attr("action"), form.serialize(), 'json', sysmedic.ajax.beforeSend('loading', 'register'), error, success);
     };
 
     return {
-        register: register,
-        datepicker: datepicker
+        create: create
     };
 
 }());

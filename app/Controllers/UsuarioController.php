@@ -52,7 +52,10 @@ class UsuarioController extends Controller
 
             if($user = $class->login($user["$column"], $user["password"])) {
                     @session_start();
+                    $acesso = new AcessoController();
+                    $permissoes = $acesso->get($user->id);
                     $_SESSION['user'] = $user;
+                    $_SESSION['user']->permissoes = $permissoes;
                     $this->setResponse(["Logado com sucesso!"]);
             } else {
                     $response->code(302);
@@ -88,8 +91,6 @@ class UsuarioController extends Controller
             $usuario['senha'] = $this->encryption($usuario['senha']);
             empty($usuario['naturalidade']) ? $usuario['naturalidade'] = NULL : '';
             !isset($usuario['email']) ? $usuario['email'] = NULL : '';
-            $usuario['data_nascimento']  = date('Y-m-d', strtotime($usuario['data_nascimento']));
-
             if($this->usuario->valueExist("pessoa", "cpf", $usuario["cpf"])) {
                 $this->setResponse(["success" => false, "msg" => [["CPF já cadastrado!"]]]);
             } else if($this->usuario->valueExist("pessoa","rg", $usuario["rg"])) {

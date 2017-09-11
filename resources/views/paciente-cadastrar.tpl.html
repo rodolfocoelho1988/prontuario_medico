@@ -1,28 +1,34 @@
 {% extends 'template.tpl.html' %}
-{% block title %}Adicionar um Médico - SysMedic{% endblock %}
+{% block title %}Adicionar um Paciente - SysMedic{% endblock %}
 
 {% block sidebar %}
 {% include "sidebar.tpl.html" %}
 {% endblock %}
 
 {% block content %}
-{% if not session %}
+    {% set pode = false %}
+    {% for permissao in session.permissoes %}
+        {% if request.uri in permissao.url %}
+            {% set pode = true %}
+        {% endif %}
+    {% endfor %}
+
+{% if pode == false %}
 <script>window.location.href = '/login'</script>
-{% else %}
-    {% if session.perfil == 'secretaria' %}
+{% endif %}
     <main class="mn-inner">
         <div class="row">
             <div class="col s12">
-                <div class="page-title">Novo Médico</div>
+                <div class="page-title">Novo Paciente</div>
             </div>
             <div class="col s12 m12 l12">
                 <div class="card">
                     <div class="card-content">
-                        <form id="register-form" action="/medico/cadastrar">
+                        <form id="create-form" action="/paciente/cadastrar">
                             <div class="row">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input placeholder="Nome" name="usuario[nome]" id="first_name" type="text">
+                                        <input placeholder="Nome *" name="usuario[nome]" id="first_name" type="text">
                                         <label for="first_name">Nome <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s6">
@@ -42,12 +48,26 @@
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input placeholder="CRM *" name="medico[crm]" id="crm" type="text">
-                                        <label for="crm">CRM <span style='color: red'>*</span></label>
+                                        <input placeholder="E-mail *" name="usuario[email]" id="email" type="email">
+                                        <label for="email">Email <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s6">
                                         <input placeholder="Senha *" name="usuario[senha]" id="senha" type="password">
                                         <label for="senha">Senha <span style='color: red'>*</span></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s5">
+                                        <input placeholder="Nome do Pai" name="paciente[nome_pai]" id="nome_pai" type="text">
+                                        <label for="nome_pai">Nome do Pai</label>
+                                    </div>
+                                    <div class="input-field col s5">
+                                        <input placeholder="Nome da Mãe" name="paciente[nome_mae]" id="nome_mae" type="text">
+                                        <label for="nome_mae">Nome do Mãe</label>
+                                    </div>
+                                    <div class="input-field col s2">
+                                        <input placeholder="Tipo Sanguíneo" name="paciente[tipo_sanguineo]" id="tipo_sanguineo" type="text">
+                                        <label for="tipo_sanguineo">Tipo Sanguíneo</label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -67,7 +87,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s4">
-                                        <input placeholder="Rua" name="endereco[rua]" id="rua" type="text">
+                                        <input placeholder="Rua *" name="endereco[rua]" id="rua" type="text">
                                         <label for="rua">Rua <span style='color: red'>*</span></label>
                                     </div>
                                     <div class="input-field col s4">
@@ -75,7 +95,7 @@
                                         <label for="numero">Número</label>
                                     </div>
                                     <div class="input-field col s4">
-                                        <input placeholder="Bairro" name="endereco[bairro]" id="bairro" type="text">
+                                        <input placeholder="Bairro *" name="endereco[bairro]" id="bairro" type="text">
                                         <label for="bairro">Bairro <span style='color: red'>*</span></label>
                                     </div>
                                 </div>
@@ -124,7 +144,7 @@
                                 </div>
 
                                 <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Telefone <i class="material-icons right">phone</i></a>
-                                <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.register()">Cadastrar <i class="material-icons right">send</i></a>
+                                <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.paciente.create()">Cadastrar <i class="material-icons right">send</i></a>
                             </div>
                             <div><span style='color: red'>*</span> - os campos são obrigatórios</div>
                         </form>
@@ -133,10 +153,6 @@
             </div>
         </div>
     </main>
-    {% else %}
-        <script>window.location.href = '/'</script>
-    {% endif %}
-{% endif %}
 </div>
 <div class="left-sidebar-hover"></div>
 {% endblock %}
@@ -144,24 +160,23 @@
 {% block modulejs %}
 <script type="text/javascript" src="/js/module/ajax.js"></script>
 <script type="text/javascript" src="/js/module/city.js"></script>
-<script type="text/javascript" src="/js/module/doctor.js"></script>
+<script type="text/javascript" src="/js/module/paciente.js"></script>
 <script type="text/javascript" src="/js/module/telephone.js"></script>
 <script type="text/javascript" src="/js/module/user.js"></script>
+<script type="text/javascript" src="/js/module/picker.js"></script>
 {% endblock %}
 
 {% block javascript %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
-<script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="/bower_components/jquery-mask-plugin/src/jquery.mask.js"></script>
 {% endblock %}
 
 {% block scriptjs %}
 <script type="text/javascript">
     $(document).ready(function() {
-        sysmedic.doctor.datepicker();
+        sysmedic.picker.birthdate();
         sysmedic.telephone.mask(0);
         sysmedic.user.maskCPF();
-        $('.medico').addClass('active');
+        $('.paciente').addClass('active');
         $('.collapsible').collapsible('open', 0);
     });
 </script>
