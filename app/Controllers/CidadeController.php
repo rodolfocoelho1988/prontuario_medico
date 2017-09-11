@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Klein\Request;
+
 class CidadeController extends Controller
 {
     private $cidade;
@@ -16,13 +18,18 @@ class CidadeController extends Controller
     }
 
     /**
-     * Busca todas as cidades de um determinado estado.
-     * @param int $estado
+     * usca todas as cidades de um determinado estado.
+     * @param Request $request
      * @return array
      */
-    public function get(int $estado)
+    public function get(Request $request)
     {
-        return $this->cidade->get($estado);
+        $url = explode("/", $request->uri());
+        foreach($_SESSION['user']->permissoes as $permissao) {
+            if("/api/".$url[1]."/*" == $permissao->url) {
+                return $this->cidade->get($request->id);
+            }
+        }
     }
 
 }

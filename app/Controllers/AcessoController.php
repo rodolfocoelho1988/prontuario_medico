@@ -17,6 +17,10 @@ class AcessoController extends Controller
         $this->acesso = new Acesso();
     }
 
+    /**
+     * @param int $pessoa
+     * @return array
+     */
     public function get(int $pessoa)
     {
         @session_start();

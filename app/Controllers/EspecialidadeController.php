@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Especialidade;
+use Klein\Request;
 
 class EspecialidadeController extends Controller
 {
@@ -19,11 +20,16 @@ class EspecialidadeController extends Controller
 
     /**
      * Busca todas as especialidades de um determinado médico
-     * @param int $medico
+     * @param Request $request
      * @return array
      */
-    public function get(int $medico)
+    public function get(Request $request)
     {
-        return $this->especialidade->get($medico);
+        $url = explode("/", $request->uri());
+        foreach($_SESSION['user']->permissoes as $permissao) {
+            if("/api/".$url[1]."/*" == $permissao->url) {
+                return $this->especialidade->get($request->id);
+            }
+        }
     }
 }

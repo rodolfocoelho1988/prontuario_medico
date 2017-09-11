@@ -12,6 +12,10 @@ class Acesso extends Model
         parent::__construct();
     }
 
+    /**
+     * @param int $pessoa
+     * @return array
+     */
     public function get(int $pessoa)
     {
         $db = self::getInstance();

@@ -124,7 +124,7 @@ class Route
          */
         $this->route->respond('GET', '/cidade/[i:id]', function($request) {
             $cidade = new CidadeController();
-            echo json_encode($cidade->get($request->id));
+            echo json_encode($cidade->get($request));
         });
 
         /**
@@ -132,7 +132,7 @@ class Route
          */
         $this->route->respond('GET', '/telefone/[i:id]', function($request) {
             $telefone = new TelefoneController();
-            echo json_encode($telefone->get($request->id));
+            echo json_encode($telefone->get($request));
         });
 
         /**
@@ -140,7 +140,7 @@ class Route
          */
         $this->route->respond('GET', '/especialidade/[i:id]', function($request) {
             $especialidade = new EspecialidadeController();
-            echo json_encode($especialidade->get($request->id));
+            echo json_encode($especialidade->get($request));
         });
     }
 

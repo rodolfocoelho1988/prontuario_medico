@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Telefone;
 use App\Requests\TelefoneCreateRequest;
+use Klein\Request;
 
 class TelefoneController extends Controller
 {
@@ -65,11 +66,16 @@ class TelefoneController extends Controller
 
     /**
      * Busca todos os telefones de uma determinada pessoa
-     * @param int $pessoa
+     * @param Request $request
      * @return mixed
      */
-    public function get(int $pessoa)
+    public function get(Request $request)
     {
-        return $this->telefone->get($pessoa);
+        $url = explode("/", $request->uri());
+        foreach($_SESSION['user']->permissoes as $permissao) {
+            if("/api/".$url[1]."/*" == $permissao->url) {
+                return $this->telefone->get($request->id);
+            }
+        }
     }
 }
