@@ -71,11 +71,6 @@ class TelefoneController extends Controller
      */
     public function get(Request $request)
     {
-        $url = explode("/", $request->uri());
-        foreach($_SESSION['user']->permissoes as $permissao) {
-            if("/api/".$url[1]."/*" == $permissao->url) {
-                return $this->telefone->get($request->id);
-            }
-        }
+        return $this->telefone->get($request->id);
     }
 }

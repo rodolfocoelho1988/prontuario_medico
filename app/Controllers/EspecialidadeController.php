@@ -25,11 +25,6 @@ class EspecialidadeController extends Controller
      */
     public function get(Request $request)
     {
-        $url = explode("/", $request->uri());
-        foreach($_SESSION['user']->permissoes as $permissao) {
-            if("/api/".$url[1]."/*" == $permissao->url) {
-                return $this->especialidade->get($request->id);
-            }
-        }
+        return $this->especialidade->get($request->id);
     }
 }

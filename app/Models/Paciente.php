@@ -38,12 +38,8 @@ class Paciente extends Model
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();
-        if($db->rowCount()) {
-            $result = $db->fetchAll(\PDO::FETCH_CLASS)[0];
-            $result->perfil = "paciente";
-            return $result;
-
-        }
+        if($db->rowCount())
+            return $db->fetchAll(\PDO::FETCH_CLASS)[0];
         return false;
     }
 
@@ -82,7 +78,7 @@ class Paciente extends Model
      */
     public function getAll()
     {
-        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.cpf, t2.rg, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id)");
+        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.cpf, t2.rg, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) ORDER BY t1.id DESC");
         $db->execute();
         return $db->fetchAll(\PDO::FETCH_CLASS);
     }

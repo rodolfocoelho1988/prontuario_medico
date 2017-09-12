@@ -10,8 +10,8 @@
 
 {% block content %}
     {% set pode = false %}
-    {% for permissao in session.permissoes %}
-        {% if request.uri in permissao.url %}
+    {% for grupo in grupos %}
+        {% if request.uri == grupo.url %}
             {% set pode = true %}
         {% endif %}
     {% endfor %}
@@ -28,21 +28,21 @@
                         <table id="datatable" class="display responsive-table datatable-example">
                             <thead>
                             <tr>
+                                <th>Horário</th>
                                 <th>Médico</th>
                                 <th>CRM</th>
                                 <th>Paciente</th>
                                 <th>E-mail</th>
-                                <th>Horário</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for agendamento in agendamentos %}
                                 <tr>
+                                    <td>{{ agendamento.horario}}</td>
                                     <td>{{ agendamento.medico }}</td>
                                     <td>{{ agendamento.crm }}</td>
                                     <td>{{ agendamento.paciente }}</td>
                                     <td>{{ agendamento.email }}</td>
-                                    <td>{{ agendamento.horario}}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

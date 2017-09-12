@@ -4,12 +4,13 @@ namespace App;
 
 use App\Controllers\AgendamentoController;
 use App\Controllers\CidadeController;
-use App\Controllers\Dashboard;
+use App\Controllers\Pages\AgendamentoPage;
+use App\Controllers\Pages\IndexPage;
 use App\Controllers\EspecialidadeController;
-use App\Controllers\EstadoController;
 use App\Controllers\MedicoController;
-use App\Controllers\NacionalidadeController;
 use App\Controllers\PacienteController;
+use App\Controllers\Pages\MedicoPage;
+use App\Controllers\Pages\PacientePage;
 use App\Controllers\TelefoneController;
 use App\Controllers\UsuarioController;
 use \App\Libs\Twig as Twig;
@@ -38,9 +39,9 @@ class Route
     public function routing()
     {
         @session_start();
-        $this->route->respond('GET', '/', function() {
-            $dashboard = new Dashboard();
-            echo $this->twig->render('index.tpl.html', $dashboard->index());
+        $this->route->respond('GET', '/', function($request) {
+            $indexPage = new IndexPage();
+            echo $this->twig->render('index.tpl.html', $indexPage->index($request));
         });
         $this->route->respond('GET', '/login', function() {
             echo $this->twig->render('login.tpl.html');
@@ -54,19 +55,12 @@ class Route
          * Médico
          */
         $this->route->respond('GET', '/medico', function($request) {
-            $medico = new MedicoController();
-            $medicos = $medico->getAll();
-            echo $this->twig->render('medico.tpl.html', ["medicos" => $medicos, "request" => $request]);
+            $medicoPage = new MedicoPage($request);
+            echo $this->twig->render('medico.tpl.html', $medicoPage->index());
         });
         $this->route->respond('GET', '/medico/cadastrar', function($request) {
-            $nacionalidade = new NacionalidadeController();
-            $estado = new EstadoController();
-            $array = [
-                "nacionalidades" => $nacionalidade->getAll(),
-                "estados" => $estado->getAll(),
-                "request" => $request
-            ];
-            echo $this->twig->render('medico-cadastrar.tpl.html', $array);
+            $medicoPage = new MedicoPage($request);
+            echo $this->twig->render('medico-cadastrar.tpl.html', $medicoPage->cadastrar());
         });
         $this->route->respond('POST', '/medico/cadastrar', function($request, $response) {
             $medico = new MedicoController();
@@ -77,19 +71,12 @@ class Route
          * Paciente
          */
         $this->route->respond('GET', '/paciente', function($request) {
-            $paciente = new PacienteController();
-            $pacientes = $paciente->getAll();
-            echo $this->twig->render('paciente.tpl.html', ["pacientes" => $pacientes, "request" => $request]);
+            $pacientePage = new PacientePage($request);
+            echo $this->twig->render('paciente.tpl.html', $pacientePage->index());
         });
         $this->route->respond('GET', '/paciente/cadastrar', function($request) {
-            $nacionalidade = new NacionalidadeController();
-            $estado = new EstadoController();
-            $array = [
-                "nacionalidades" => $nacionalidade->getAll(),
-                "estados" => $estado->getAll(),
-                "request" => $request
-            ];
-            echo $this->twig->render('paciente-cadastrar.tpl.html', $array);
+            $pacientePage = new PacientePage($request);
+            echo $this->twig->render('paciente-cadastrar.tpl.html', $pacientePage->cadastrar());
         });
         $this->route->respond('POST', '/paciente/cadastrar', function($request, $response) {
             $paciente = new PacienteController();
@@ -100,19 +87,12 @@ class Route
          * Agendamento
          */
         $this->route->respond('GET', '/agendamento', function($request) {
-            $agendamento = new AgendamentoController();
-            $agendamentos = $agendamento->getAll();
-            echo $this->twig->render('agendamento.tpl.html', ["agendamentos" => $agendamentos, "request" => $request]);
+            $agendamentoPage = new AgendamentoPage($request);
+            echo $this->twig->render('agendamento.tpl.html', $agendamentoPage->index());
         });
         $this->route->respond('GET', '/agendamento/cadastrar', function($request) {
-            $medico = new MedicoController();
-            $paciente = new PacienteController();
-            $array = [
-                "medicos" => $medico->getAll(),
-                "pacientes" => $paciente->getAll(),
-                "request" => $request
-            ];
-            echo $this->twig->render('agendamento-cadastrar.tpl.html', $array);
+            $agendamentoPage = new AgendamentoPage($request);
+            echo $this->twig->render('agendamento-cadastrar.tpl.html', $agendamentoPage->cadastrar());
         });
         $this->route->respond('POST', '/agendamento/cadastrar', function($request, $response) {
             $agendamento = new AgendamentoController();

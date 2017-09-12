@@ -48,6 +48,7 @@ class PacienteController extends Controller
             $this->setResponse($endereco["msg"]);
         } else {
             $pessoa['endereco_id'] = $endereco["msg"];
+            $pessoa['grupo_id'] = 1;
             $usuarioObj = new UsuarioController();
             // Faz o cadastro de uma pessoa no banco;
             $pessoa = $usuarioObj->create($pessoa);
@@ -69,6 +70,10 @@ class PacienteController extends Controller
                     Usuario::delete($paciente['pessoa_id']);
                     Endereco::delete($endereco["msg"]);
                 } else {
+                    // Se os campos virem vazios, adicionar valor Nulo;
+                    empty($paciente["nome_pai"]) ? $paciente["nome_pai"] = NULL : '';
+                    empty($paciente["nome_mae"]) ? $paciente["nome_mae"] = NULL : '';
+                    empty($paciente["tipo_sanguineo"]) ? $paciente["tipo_sanguineo"] = NULL : '';
                     if($paciente_id = $this->paciente->create($paciente)) {
                         // Se o médico cadastrou, vou adicionar os telefones;
                         $telefone = new TelefoneController();

@@ -9,12 +9,17 @@
 {% endblock %}
 
 {% block content %}
-{% if not session %}
+    {% set pode = false %}
+    {% for grupo in grupos %}
+        {% if request.uri == grupo.url %}
+            {% set pode = true %}
+        {% endif %}
+    {% endfor %}
+
+{% if pode == false %}
 <script>window.location.href = '/login'</script>
 {% endif %}
-    {% if session.perfil == 'secretaria' %}
-        {% include "index/secretaria.tpl.html" %}
-    {% endif %}
+    {% include "index/secretaria.tpl.html" %}
 </div>
 <div class="left-sidebar-hover"></div>
 {% endblock %}

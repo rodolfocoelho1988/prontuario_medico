@@ -51,11 +51,7 @@ class UsuarioController extends Controller
             }
 
             if($user = $class->login($user["$column"], $user["password"])) {
-                    @session_start();
-                    $acesso = new AcessoController();
-                    $permissoes = $acesso->get($user->id);
                     $_SESSION['user'] = $user;
-                    $_SESSION['user']->permissoes = $permissoes;
                     $this->setResponse(["Logado com sucesso!"]);
             } else {
                     $response->code(302);

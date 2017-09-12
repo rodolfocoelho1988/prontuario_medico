@@ -18,7 +18,7 @@ class Especialidade extends Model
      */
     public function get(int $medico)
     {
-        $db = self::getInstance()->prepare("SELECT * FROM especialidade WHERE medico_id = $medico");
+        $db = self::getInstance()->prepare("SELECT t2.especialidade_id, t1.titulo FROM especialidade AS t1 INNER JOIN medico_especialidade AS t2 ON (t2.especialidade_id = t1.id) INNER JOIN medico AS t3 ON (t3.id = t2.medico_id) WHERE t3.id = $medico");
         $db->execute();
         return $db->fetchAll(\PDO::FETCH_CLASS);
     }

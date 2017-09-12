@@ -19,7 +19,7 @@ class Usuario extends Model
     public function create(array $usuario)
     {
         $database = self::getInstance();
-        $db = $database->prepare("INSERT INTO pessoa (nome, endereco_id, cpf, rg, data_nascimento, naturalidade, nacionalidade_id, email, senha) VALUES (:nome, :endereco_id, :cpf, :rg, :data_nascimento, :naturalidade, :nacionalidade_id, :email, :senha)");
+        $db = $database->prepare("INSERT INTO pessoa (nome, endereco_id, cpf, rg, data_nascimento, naturalidade, nacionalidade_id, email, senha, grupo_id) VALUES (:nome, :endereco_id, :cpf, :rg, :data_nascimento, :naturalidade, :nacionalidade_id, :email, :senha, :grupo_id)");
         $db->bindParam(":nome", $usuario['nome']);
         $db->bindParam(":endereco_id", $usuario['endereco_id']);
         $db->bindParam(":cpf", $usuario['cpf']);
@@ -29,6 +29,7 @@ class Usuario extends Model
         $db->bindParam(":nacionalidade_id", $usuario['nacionalidade_id']);
         $db->bindParam(":email", $usuario['email']);
         $db->bindParam(":senha", $usuario['senha']);
+        $db->bindParam(":grupo_id", $usuario['grupo_id']);
         $db->execute();
         if($db->rowCount())
             return $database->lastInsertId();

@@ -10,8 +10,9 @@
 
 {% block content %}
     {% set pode = false %}
-    {% for permissao in session.permissoes %}
-        {% if request.uri in permissao.url %}
+
+    {% for grupo in grupos %}
+        {% if request.uri == grupo.url %}
             {% set pode = true %}
         {% endif %}
     {% endfor %}
@@ -28,6 +29,7 @@
                         <table id="datatable" class="display responsive-table datatable-example">
                             <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Nome</th>
                                 <th>CRM</th>
                                 <th>Nacionalidade</th>
@@ -39,6 +41,7 @@
                             <tbody>
                             {% for medico in medicos %}
                                 <tr>
+                                    <td>{{ medico.id }}</td>
                                     <td>{{ medico.nome }}</td>
                                     <td>{{ medico.crm }}</td>
                                     <td>{{ medico.nacionalidade }}</td>

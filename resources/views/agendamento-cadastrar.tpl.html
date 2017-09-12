@@ -11,8 +11,8 @@
 
 {% block content %}
     {% set pode = false %}
-    {% for permissao in session.permissoes %}
-        {% if request.uri in permissao.url %}
+    {% for grupo in grupos %}
+        {% if request.uri == grupo.url %}
             {% set pode = true %}
         {% endif %}
     {% endfor %}

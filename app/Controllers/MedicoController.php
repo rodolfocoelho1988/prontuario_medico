@@ -49,6 +49,7 @@ class MedicoController extends Controller
             $this->setResponse($endereco["msg"]);
         } else {
             $pessoa['endereco_id'] = $endereco["msg"];
+            $pessoa['grupo_id'] = 3;
             $usuarioObj = new UsuarioController();
             // Faz o cadastro de uma pessoa no banco;
             $pessoa = $usuarioObj->create($pessoa);
