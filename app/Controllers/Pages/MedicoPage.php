@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Pages;
 
+use App\Controllers\EspecialidadeController;
 use App\Controllers\EstadoController;
 use App\Controllers\GrupoController;
 use App\Controllers\MedicoController;
@@ -17,6 +18,7 @@ class MedicoPage
     private $grupo;
     private $nacionalidade;
     private $estado;
+    private $especialidade;
 
     /**
      * MedicoPage constructor.
@@ -57,12 +59,14 @@ class MedicoPage
         $this->estado = new EstadoController();
         $this->menu = new MenuController();
         $this->grupo = new GrupoController();
+        $this->especialidade = new EspecialidadeController();
         $array = [
             "nacionalidades" => $this->nacionalidade->getAll(),
             "estados" => $this->estado->getAll(),
             "menus" => $this->menu->get(),
             "grupos" => $this->grupo->get(),
-            "request" => $this->request
+            "request" => $this->request,
+            "especialidades" => $this->especialidade->getAll()
         ];
 
         return $array;

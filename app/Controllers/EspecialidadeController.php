@@ -27,4 +27,24 @@ class EspecialidadeController extends Controller
     {
         return $this->especialidade->get($request->id);
     }
+
+    /**
+     * Busca todas as especialidades que existe na base de dados
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->especialidade->getAll();
+    }
+
+    /**
+     * Faz a sincronização entre médico e especialidades, deleta todos e insere os novos;
+     * @param array $especialidades
+     * @param int $medico
+     * @return array
+     */
+    public function synchronize(array $especialidades, int $medico)
+    {
+        return $this->especialidade->synchronize($especialidades, $medico);
+    }
 }

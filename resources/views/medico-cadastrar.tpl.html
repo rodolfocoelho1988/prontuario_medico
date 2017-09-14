@@ -1,6 +1,10 @@
 {% extends 'template.tpl.html' %}
 {% block title %}Adicionar um Médico - SysMedic{% endblock %}
 
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/css/select2.css">
+{% endblock %}
+
 {% block sidebar %}
 {% include "sidebar.tpl.html" %}
 {% endblock %}
@@ -130,7 +134,24 @@
                                     </div>
                                 </div>
 
+                                <div id="especialidade-modal" class="modal">
+                                    <div class="modal-content">
+                                        <h4>Adicionar especialidades</h4>
+                                        <div id="especialidade-add" class="row">
+                                            <select name="medico_especialidade[]" class="select-especialidades js-states browser-default" multiple="multiple" tabindex="-1" style="width: 100%" id="multiple">
+                                                {% for especialidade in especialidades %}
+                                                    <option value="{{ especialidade.id }}">{{ especialidade.titulo }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                    </div>
+                                </div>
+
                                 <a class="left waves-effect waves-light btn modal-trigger" href="#telefone-modal">Telefone <i class="material-icons right">phone</i></a>
+                                <a class="left waves-effect waves-light btn modal-trigger" style="margin-left: 1%" href="#especialidade-modal">Especialidade <i class="material-icons right">add</i></a>
                                 <a id="register" class="right waves-effect waves-light btn m-b-xs" onclick="sysmedic.doctor.create()">Cadastrar <i class="material-icons right">send</i></a>
                             </div>
                             <div><span style='color: red'>*</span> - os campos são obrigatórios</div>
@@ -155,6 +176,7 @@
 
 {% block javascript %}
 <script type="text/javascript" src="/bower_components/jquery-mask-plugin/src/jquery.mask.js"></script>
+<script type="text/javascript" src="/bower_components/select2/dist/js/select2.min.js"></script>
 {% endblock %}
 
 {% block scriptjs %}
@@ -165,6 +187,9 @@
         sysmedic.user.maskCPF();
         $('.medico').addClass('active');
         $('.collapsible').collapsible('open', 0);
+        $('.select-especialidades').select2({
+            placeholder: 'Selecione as especialidades do médico'
+        });
     });
 </script>
 {% endblock %}

@@ -91,6 +91,8 @@ class MedicoController extends Controller
                             Endereco::delete($endereco["msg"]);
                             $this->setResponse($resultTelefone["msg"]);
                         } else {
+                            $especialidade = new EspecialidadeController();
+                            $especialidade->synchronize($_POST['medico_especialidade'], $medico_id);
                             $this->setResponse(["Médico cadastrado com sucesso!"]);
                         }
                     } else {
