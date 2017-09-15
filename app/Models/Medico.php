@@ -57,7 +57,7 @@ class Medico extends Model
      * @param array $medico
      * @return bool|string
      */
-    public function register(array $medico)
+    public function create(array $medico)
     {
         $database = self::getInstance();
         $db = $database->prepare("INSERT INTO medico (crm, pessoa_id) VALUES (:crm, :pessoa_id)");

@@ -20,12 +20,12 @@ class TelefoneController extends Controller
     }
 
     /**
-     * @param int $usuario_id
+     * Faz a validação e a limpeza dos telefones em brancos
+     * @param array $telefones
      * @return array
      */
-    public function create(int $usuario_id)
+    public function validation(array $telefones)
     {
-        $telefones = $_POST['telefone'];
         $array = [];
         /**
          * Organiza os telefones
@@ -36,10 +36,9 @@ class TelefoneController extends Controller
         }
 
         /**
-         * Armazena os IDs dos telefones já cadastrado, para caso houver fala em um cadastro, deletar os outros telefones
-         * Para não ficar lixo na base;
+         * Armazena os telefones que sao válidos
          */
-        $telefones_ids = [];
+        $telefonesFinais = [];
         /**
          * Limpa os campos de telefones que não estiverem preenchidos
          */
@@ -51,17 +50,29 @@ class TelefoneController extends Controller
                 $telefone["numero"] = str_replace([" ", "(", ")", "-"],"", $telefone["numero"]);
                 $rules = TelefoneCreateRequest::rules($telefone);
                 if($rules !== true) {
-                    foreach($telefones_ids as $id) {
-                        Telefone::delete($id);
-                    }
                     return ["success" => false, "msg" => $rules];
                 } else {
                     $telefone["numero"] = str_replace("-","", $numero);
-                    $telefones_ids[] = $this->telefone->create($telefone, $usuario_id);
+                    $telefonesFinais[] = $telefone;
                 }
             }
         }
-        return ["success" => true, "msg" => $telefones_ids];
+
+        return ["success" => true, "msg" => $telefonesFinais];
+    }
+
+    /**
+     * Deleta e insere os novos telefones
+     * @param array $telefones
+     * @param int $usuario
+     * @return array|bool
+     */
+    public function synchronize(array $telefones, int $usuario)
+    {
+        if(!empty($telefones) or (!isset($telefones)))
+            return $this->telefone->synchronize($telefones, $usuario);
+        else
+            return true;
     }
 
     /**

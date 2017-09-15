@@ -8,6 +8,7 @@ use App\Models\Secretaria;
 use App\Models\Usuario;
 use App\Requests\UsuarioLoginRequest;
 use App\Requests\UsuarioRegisterRequest;
+use Klein\Response;
 
 class UsuarioController extends Controller
 {
@@ -27,7 +28,7 @@ class UsuarioController extends Controller
      * @param \Klein\Response $response
      * @return string
      */
-	public function login(\Klein\Response $response) : string
+	public function login(Response $response) : string
     {
         $user = $_POST['user'];
         $rules = UsuarioLoginRequest::rules($user);
@@ -78,33 +79,7 @@ class UsuarioController extends Controller
      */
     public function create(array $usuario)
     {
-        // CPF somente números;
-        $usuario["cpf"] = preg_replace( '/[^0-9]/is', '', $usuario["cpf"]);
-        $rules = UsuarioRegisterRequest::rules($usuario);
-        if($rules !== true) {
-            $this->setResponse(["success" => false, "msg" => $rules]);
-        } else {
-            $usuario['senha'] = $this->encryption($usuario['senha']);
-            empty($usuario['naturalidade']) ? $usuario['naturalidade'] = NULL : '';
-            !isset($usuario['email']) ? $usuario['email'] = NULL : '';
-            if($this->usuario->valueExist("pessoa", "cpf", $usuario["cpf"])) {
-                $this->setResponse(["success" => false, "msg" => [["CPF já cadastrado!"]]]);
-            } else if($this->usuario->valueExist("pessoa","rg", $usuario["rg"])) {
-                $this->setResponse(["success" => false, "msg" => [["RG já cadastrado!"]]]);
-            } else if(!$this->cpfValidator($usuario['cpf'])) {
-                $this->setResponse(["success" => false, "msg" => [["CPF Inválido!"]]]);
-            } else if($usuario['email'] != NULL) {
-                if($this->usuario->valueExist("pessoa","email", $usuario["email"])) {
-                    $this->setResponse(["success" => false, "msg" => [["E-mail já cadastrado!"]]]);
-                } else {
-                    $this->setResponse(["success" => true, "msg" => $this->usuario->create($usuario)]);
-                }
-            } else {
-                $this->setResponse(["success" => true, "msg" => $this->usuario->create($usuario)]);
-            }
-        }
-
-        return $this->getResponse();
+        return $this->usuario->create($usuario);
     }
 
     /**
@@ -131,5 +106,52 @@ class UsuarioController extends Controller
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Efetua o logout de qualquer usuário
+     * @param Response $response
+     * @return \Klein\AbstractResponse
+     */
+    public function logout(Response $response)
+    {
+        session_destroy();
+        return $response->redirect('/login', 200);
+    }
+
+    /**
+     * Faz a validação de dados de um usuário
+     * @param array $usuario
+     * @return array|string
+     */
+    public function validation(array $usuario)
+    {
+        // CPF somente números;
+        $usuario["cpf"] = preg_replace( '/[^0-9]/is', '', $usuario["cpf"]);
+        $rules = UsuarioRegisterRequest::rules($usuario);
+        if($rules !== true) {
+            $this->setResponse(["success" => false, "msg" => $rules]);
+        } else {
+            $usuario['senha'] = $this->encryption($usuario['senha']);
+            empty($usuario['naturalidade']) ? $usuario['naturalidade'] = NULL : '';
+            !isset($usuario['email']) ? $usuario['email'] = NULL : '';
+            if($this->usuario->valueExist("pessoa", "cpf", $usuario["cpf"])) {
+                $this->setResponse(["success" => false, "msg" => [["CPF já cadastrado!"]]]);
+            } else if($this->usuario->valueExist("pessoa","rg", $usuario["rg"])) {
+                $this->setResponse(["success" => false, "msg" => [["RG já cadastrado!"]]]);
+            } else if(!$this->cpfValidator($usuario['cpf'])) {
+                $this->setResponse(["success" => false, "msg" => [["CPF Inválido!"]]]);
+            } else if($usuario['email'] != NULL) {
+                if($this->usuario->valueExist("pessoa","email", $usuario["email"])) {
+                    $this->setResponse(["success" => false, "msg" => [["E-mail já cadastrado!"]]]);
+                } else {
+                    $this->setResponse(["success" => true, "msg" => $usuario]);
+                }
+            } else {
+                $this->setResponse(["success" => true, "msg" => $usuario]);
+            }
+        }
+
+        return $this->getResponse();
     }
 }

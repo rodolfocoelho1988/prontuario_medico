@@ -40,7 +40,6 @@ class Especialidade extends Model
      */
     public function synchronize(array $especialidades, int $medico)
     {
-
         $especialidades_ids = [];
         $db = self::getInstance();
         $delete = $db->prepare("DELETE FROM medico_especialidade WHERE medico_id = :medico");

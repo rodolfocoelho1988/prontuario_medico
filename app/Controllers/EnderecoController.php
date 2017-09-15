@@ -20,9 +20,19 @@ class EnderecoController extends Controller
 
     /**
      * @param array $endereco
-     * @return array
+     * @return bool|string
      */
     public function create(array $endereco)
+    {
+        return $this->endereco->register($endereco);
+    }
+
+    /**
+     * Faz a validação do endereço de um usuário
+     * @param array $endereco
+     * @return array|string
+     */
+    public function validation(array $endereco)
     {
         $rules = EnderecoRegisterRequest::rules($endereco);
         if($rules !== true) {
@@ -30,11 +40,7 @@ class EnderecoController extends Controller
         } else {
             empty($endereco['numero']) ? $endereco['numero'] = NULL : "";
             empty($endereco['complemento']) ? $endereco['complemento'] = NULL : "";
-            $endereco = $this->endereco->register($endereco);
-            if($endereco)
-                $this->setResponse(["success" => true, "msg" => $endereco]);
-            else
-                $this->setResponse(["success" => false, "msg" => [["error" => ["Cadastro indisponível no momento."]]]]);
+            $this->setResponse(["success" => true, "msg" => $endereco]);
         }
 
         return $this->getResponse();

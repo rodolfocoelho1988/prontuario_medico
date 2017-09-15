@@ -50,6 +50,10 @@ class Route
             $usuario = new UsuarioController();
             echo $usuario->login($response);
         });
+        $this->route->respond('GET', '/logout', function($request, $response) {
+            $usuario = new UsuarioController();
+            return $usuario->logout($response);
+        });
 
         /**
          * Médico

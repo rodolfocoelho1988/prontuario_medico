@@ -41,10 +41,13 @@ class EspecialidadeController extends Controller
      * Faz a sincronização entre médico e especialidades, deleta todos e insere os novos;
      * @param array $especialidades
      * @param int $medico
-     * @return array
+     * @return array|bool
      */
     public function synchronize(array $especialidades, int $medico)
     {
-        return $this->especialidade->synchronize($especialidades, $medico);
+        if(!empty($especialidades) or !isset($especialidades))
+            return $this->especialidade->synchronize($especialidades, $medico);
+        else
+            return true;
     }
 }

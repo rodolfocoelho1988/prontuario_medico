@@ -32,77 +32,85 @@ class MedicoController extends Controller
     }
 
     /**
+     * @param array $medico
+     * @return array|string
+     */
+    private function validation(array $medico)
+    {
+        $rules = MedicoRegisterRequest::rules($medico);
+        if($rules !== true) {
+            if($this->medico->valueExist("medico", "crm", $medico['crm'])) {
+                $this->setResponse(["success" => false, "msg" => "CRM já existe."]);
+            } else {
+                $this->setResponse(["success" => false, "msg" => $rules]);
+            }
+        } else {
+            $this->setResponse(["success" => true, "msg" => $medico]);
+        }
+
+        return $this->getResponse();
+    }
+
+    /**
      * Efetua os procedimentos necessário para o cadastrado de um médico
      * @param Response $response
      * @return array|string
      */
     public function create(Response $response)
     {
+        /**
+         * Validação dos campos;
+         */
         $endereco = new EnderecoController();
-        $pessoa = $_POST['usuario'];
+        $usuario = new UsuarioController();
+        $telefone = new TelefoneController();
+        $especialidade = new EspecialidadeController();
 
-        $endereco = $endereco->create($_POST['endereco']);
+        $response->code(302);
 
-        // Verifica e o cadastro do endereço deu algum erro;
-        if($endereco["success"] !== true) {
-            $response->code(302);
-            $this->setResponse($endereco["msg"]);
+        $address = $endereco->validation($_POST['endereco']);
+        $user = $usuario->validation($_POST['usuario']);
+        $doctor = $this->validation($_POST['medico']);
+        $telephone = $telefone->validation($_POST['telefone']);
+
+        if($address["success"] === false) {
+            $this->setResponse($address["msg"]);
+        } else if($user["success"] === false) {
+            $this->setResponse($user["msg"]);
+        } else if($doctor["success"] === false) {
+            $this->setResponse($doctor["msg"]);
+        } else if($telephone["success"] === false) {
+            $this->setResponse($telephone["msg"]);
         } else {
-            $pessoa['endereco_id'] = $endereco["msg"];
-            $pessoa['grupo_id'] = 3;
-            $usuarioObj = new UsuarioController();
-            // Faz o cadastro de uma pessoa no banco;
-            $pessoa = $usuarioObj->create($pessoa);
-            // Verifica se o cadastro deu algum erro;
-            if($pessoa["success"] !== true) {
-                $response->code(302);
-                // Se não cadastrou a pessoa, preciso deletar o endereço que foi salvo no banco de dados
-                Endereco::delete($endereco["msg"]);
-                $this->setResponse($pessoa["msg"]);
-            } else {
+
+            $address = $address["msg"];
+            $user = $user["msg"];
+            $user["grupo_id"] = 3;
+            $doctor = $doctor["msg"];
+            $telephone = $telephone["msg"];
+
+            try {
+                $result["address"] = $endereco->create($address);
+                $user['endereco_id'] = $result["address"];
+                $result["user"] = $usuario->create($user);
+                $telefone->synchronize($telephone, $result["user"]);
+
                 $medico = [
-                    'crm' => $_POST['medico']['crm'],
-                    'pessoa_id' => $pessoa['msg']
+                    'crm' => $doctor['crm'],
+                    'pessoa_id' => $result["user"]
                 ];
-                $rules = MedicoRegisterRequest::rules($medico);
-                // Verifico se todas as regras foram validadas;
-                if($rules !== true) {
-                    $response->code(302);
-                    $this->setResponse($rules);
-                    // Se as regras não foram validas, preciso remover o endereço e a pessoa
-                    Usuario::delete($medico['pessoa_id']);
-                    Endereco::delete($endereco["msg"]);
-                } else {
-                    // Verifica se não existe outro médico com o mesmo CRM;
-                    if($this->medico->valueExist("medico", "crm", $medico['crm'])) {
-                        $this->setResponse(["msg" => [["CRM já cadastrado!"]]]);
-                        // Se existe outro médico com o mesmo CRM, preciso deletar o endereço e a pessoa;
-                        Usuario::delete($medico['pessoa_id']);
-                        Endereco::delete($endereco["msg"]);
-                    } else if($medico_id = $this->medico->register($medico)) {
-                        // Se o médico cadastrou, vou adicionar os telefones;
-                        $telefone = new TelefoneController();
-                        $resultTelefone = $telefone->create($medico["pessoa_id"]);
-                        if($resultTelefone["success"] !== true) {
-                            $response->code(302);
-                            // Se as regras não foram validas, preciso remover o endereço e a pessoa e o médico
-                            Medico::delete($medico_id);
-                            Usuario::delete($medico['pessoa_id']);
-                            Endereco::delete($endereco["msg"]);
-                            $this->setResponse($resultTelefone["msg"]);
-                        } else {
-                            $especialidade = new EspecialidadeController();
-                            $especialidade->synchronize($_POST['medico_especialidade'], $medico_id);
-                            $this->setResponse(["Médico cadastrado com sucesso!"]);
-                        }
-                    } else {
-                        $response->code(302);
-                        // Se não cadastrou o médico, preciso deletar o endereço e a pessoa;
-                        $this->setResponse(["msg" => [["Falha ao cadastrar o médico!"]]]);
-                        Usuario::delete($medico['pessoa_id']);
-                        Endereco::delete($endereco["msg"]);
-                    }
+
+                $result["medico"] = $this->medico->create($medico);
+
+                if(isset($_POST['medico_especialidade'])) {
+                    $especialidade->synchronize($_POST['medico_especialidade'], $result["medico"]);
                 }
+
+                $response->code(200);
+                $this->setResponse(["Cadastrado com sucesso!"]);
+            } catch (\Exception $exception) {
+                $response->code(302);
+                $this->setResponse(["error" => [["Código: ".$exception->getCode()." - Erro ao efetuar o cadastro"]]]);
             }
         }
 
