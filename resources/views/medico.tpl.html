@@ -49,7 +49,11 @@
                                     <td><a class="waves-effect waves-light btn" onclick="sysmedic.specialty.get({{ medico.id }})">Visualizar</a></td>
                                     <td>
                                         <a class="waves-effect waves-light blue btn">Editar</a>
-                                        <a class="waves-effect waves-light red btn">Deletar</a>
+                                        {% if medico.ativo == 1 %}
+                                            <a onclick="sysmedic.user.disable({{ medico.pessoa_id }})" class="waves-effect waves-light red btn">Desativar</a>
+                                        {% else %}
+                                            <a onclick="sysmedic.user.active({{ medico.pessoa_id }})" class="waves-effect waves-light green btn">Ativar</a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -83,6 +87,7 @@
 <script type="text/javascript" src="/js/module/modal.js"></script>
 <script type="text/javascript" src="/js/module/telephone.js"></script>
 <script type="text/javascript" src="/js/module/specialty.js"></script>
+<script type="text/javascript" src="/js/module/user.js"></script>
 {% endblock %}
 {% block scriptjs %}
 <script type="text/javascript">

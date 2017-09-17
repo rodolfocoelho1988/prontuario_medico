@@ -40,10 +40,34 @@ sysmedic.user = (function() {
         $("#cpf").mask('000.000.000-00');
     };
 
+    var disable = function(id) {
+        var error = function(resp) {
+        };
+
+        var success = function(resp) {
+            window.location.reload();
+        };
+
+        sysmedic.ajax.send('GET', '/usuario/desativar/'+id, '', 'json', '', error, success);
+    };
+
+    var active = function(id) {
+        var error = function(resp) {
+        };
+
+        var success = function(resp) {
+            window.location.reload();
+        };
+
+        sysmedic.ajax.send('GET', '/usuario/ativar/'+id, '', 'json', '', error, success);
+    };
+
     return {
         changePerfil: changePerfil,
         login: login,
-        maskCPF: maskCPF
+        maskCPF: maskCPF,
+        disable: disable,
+        active: active
     };
 
 }());

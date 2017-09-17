@@ -47,4 +47,30 @@ class Usuario extends Model
         $db->execute();
         return $db->rowCount();
     }
+
+    /**
+     * @param int $usuario
+     * @return int
+     */
+    public function disable(int $usuario)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("UPDATE pessoa SET ativo = 0 WHERE id = :usuario");
+        $db->bindParam(":usuario", $usuario);
+        $db->execute();
+        return $db->rowCount();
+    }
+
+    /**
+     * @param int $usuario
+     * @return int
+     */
+    public function active(int $usuario)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("UPDATE pessoa SET ativo = 1 WHERE id = :usuario");
+        $db->bindParam(":usuario", $usuario);
+        $db->execute();
+        return $db->rowCount();
+    }
 }

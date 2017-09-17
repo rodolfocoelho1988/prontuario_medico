@@ -8,6 +8,7 @@ use App\Models\Secretaria;
 use App\Models\Usuario;
 use App\Requests\UsuarioLoginRequest;
 use App\Requests\UsuarioRegisterRequest;
+use Klein\Request;
 use Klein\Response;
 
 class UsuarioController extends Controller
@@ -153,5 +154,25 @@ class UsuarioController extends Controller
         }
 
         return $this->getResponse();
+    }
+
+    /**
+     * Desativa um usuário no sistema
+     * @param Request $request
+     * @return int
+     */
+    public function disable(Request $request)
+    {
+        return $this->usuario->disable($request->id);
+    }
+
+    /**
+     * Ativa um usuário no sistema
+     * @param Request $request
+     * @return int
+     */
+    public function active(Request $request)
+    {
+        return $this->usuario->active($request->id);
     }
 }

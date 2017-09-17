@@ -34,7 +34,7 @@ class Paciente extends Model
     {
         $db = self::getInstance();
         // Preciso definir o que vou listar do banco do paciente;
-        $db = $db->prepare("SELECT t1.*, t2.* FROM pessoa as t1 INNER JOIN paciente as t2 ON (t2.pessoa_id = t1.id) WHERE t1.email = :login AND t1.senha = :password");
+        $db = $db->prepare("SELECT t1.*, t2.* FROM pessoa as t1 INNER JOIN paciente as t2 ON (t2.pessoa_id = t1.id) WHERE t1.email = :login AND t1.senha = :password AND t1.ativo = 1");
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();
@@ -78,7 +78,7 @@ class Paciente extends Model
      */
     public function getAll()
     {
-        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.cpf, t2.rg, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) ORDER BY t1.id DESC");
+        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.cpf, t2.rg, t2.ativo, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) ORDER BY t1.id DESC");
         $db->execute();
         return $db->fetchAll(\PDO::FETCH_CLASS);
     }

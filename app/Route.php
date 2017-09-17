@@ -126,6 +126,18 @@ class Route
             $especialidade = new EspecialidadeController();
             echo json_encode($especialidade->get($request));
         });
+
+        /**
+         * Usuario
+         */
+        $this->route->respond('GET', '/usuario/desativar/[i:id]', function($request) {
+            $usuario = new UsuarioController();
+            return json_encode($usuario->disable($request));
+        });
+        $this->route->respond('GET', '/usuario/ativar/[i:id]', function($request) {
+            $usuario = new UsuarioController();
+            return json_encode($usuario->active($request));
+        });
     }
 
     /**
