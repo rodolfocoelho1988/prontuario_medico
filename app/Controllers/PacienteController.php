@@ -114,4 +114,13 @@ class PacienteController extends Controller
     {
         return $this->paciente->getAll();
     }
+
+    /**
+     * Todos os pacientes ativo no sistema
+     * @return array
+     */
+    public function getActive()
+    {
+        return $this->paciente->getActive();
+    }
 }

@@ -62,8 +62,8 @@ class AgendamentoPage
         $this->menu = new MenuController();
         $this->grupo = new GrupoController();
         $array = [
-            "medicos" => $this->medico->getAll(),
-            "pacientes" => $this->paciente->getAll(),
+            "medicos" => $this->medico->getActive(),
+            "pacientes" => $this->paciente->getActive(),
             "menus" => $this->menu->get(),
             "grupos" => $this->grupo->get(),
             "request" => $this->request

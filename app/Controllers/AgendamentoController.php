@@ -71,7 +71,9 @@ class AgendamentoController extends Controller
         return $this->getResponse();
     }
 
-
+    /**
+     * @return array
+     */
     public function getAll()
     {
         return $this->agendamento->getAll();

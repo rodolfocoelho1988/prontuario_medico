@@ -125,4 +125,13 @@ class MedicoController extends Controller
     {
         return $this->medico->getAll();
     }
+
+    /**
+     * Todos os médicos ativos no sistema
+     * @return array
+     */
+    public function getActive()
+    {
+        return $this->medico->getActive();
+    }
 }

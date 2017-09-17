@@ -44,7 +44,7 @@ class Medico extends Model
     public function login(string $login, string $password)
     {
         $db = self::getInstance();
-        $db = $db->prepare("SELECT t1.*, t2.crm FROM pessoa as t1 INNER JOIN medico as t2 ON (t2.pessoa_id = t1.id) WHERE t2.crm = :login AND t1.senha = :password AND t1.ativo = 1");
+        $db = $db->prepare("SELECT t1.*, t2.crm FROM pessoa as t1 INNER JOIN medico as t2 ON (t2.pessoa_id = t1.id) WHERE t2.crm = :login AND t1.senha = :password AND t1.ativo = 1 AND t1.ativo = 1");
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();
@@ -79,5 +79,15 @@ class Medico extends Model
         $db = $database->prepare("DELETE FROM medico WHERE id = $id");
         $db->execute();
         return $db->rowCount();
+    }
+
+    /**
+     * @return array
+     */
+    public function getActive()
+    {
+        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.ativo, t3.nome as nacionalidade FROM medico AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) WHERE t2.ativo = 1 ORDER BY t1.id DESC");
+        $db->execute();
+        return $db->fetchAll(\PDO::FETCH_CLASS);
     }
 }
