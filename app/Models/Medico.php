@@ -44,7 +44,7 @@ class Medico extends Model
     public function login(string $login, string $password)
     {
         $db = self::getInstance();
-        $db = $db->prepare("SELECT t1.*, t2.crm FROM pessoa as t1 INNER JOIN medico as t2 ON (t2.pessoa_id = t1.id) WHERE t2.crm = :login AND t1.senha = :password AND t1.ativo = 1 AND t1.ativo = 1");
+        $db = $db->prepare("SELECT t1.*, t2.crm, t2.id as medico_id FROM pessoa as t1 INNER JOIN medico as t2 ON (t2.pessoa_id = t1.id) WHERE t2.crm = :login AND t1.senha = :password AND t1.ativo = 1 AND t1.ativo = 1");
         $db->bindParam(":login", $login);
         $db->bindParam(":password", $password);
         $db->execute();

@@ -78,4 +78,9 @@ class AgendamentoController extends Controller
     {
         return $this->agendamento->getAll();
     }
+
+    public function byDoctor()
+    {
+        return $this->agendamento->byDoctor((int) $_SESSION['user']->medico_id);
+    }
 }

@@ -27,8 +27,14 @@ sysmedic.scheduling = (function() {
         sysmedic.ajax.send('POST', form.attr("action"), form.serialize(), 'json', sysmedic.ajax.beforeSend('loading', 'register'), error, success);
     };
 
+    var view = function(text) {
+        $('#modal-descricao-text').html(text);
+        $('#modal-descricao').openModal();
+    };
+
     return {
-        create: create
+        create: create,
+        view: view
     };
 
 }());

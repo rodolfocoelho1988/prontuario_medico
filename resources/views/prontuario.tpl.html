@@ -1,0 +1,55 @@
+{% extends 'template.tpl.html' %}
+{% block title %}Prontuário - SysMedic{% endblock %}
+
+{% block sidebar %}
+{% include "sidebar.tpl.html" %}
+{% endblock %}
+
+{% block content %}
+<main class="mn-inner">
+    <div class="row">
+        <div class="col s12">
+            <div class="page-title">Prontuário - Paciente: {{ paciente.nome }} - E-mail: {{ paciente.email }}</div>
+        </div>
+        <div class="col s12 m12 l12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <a class="waves-effect waves-light btn col s12">Ficha Anamnese</a>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn col s12">Ficha Hipótese Diagnostico</a>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn col s12">Ficha Prescrição Médica</a>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn col s12">Ficha Evolução do Paciente</a>
+                    </div>
+                    <div class="row">
+                        <a class="waves-effect waves-light btn col s12">Ficha Atestado Médico</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+<div class="left-sidebar-hover"></div>
+{% endblock %}
+
+{% block modulejs %}
+<script type="text/javascript" src="/js/module/ajax.js"></script>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block scriptjs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.dashboard').addClass('active');
+        $('.collapsible').collapsible('open', 0);
+    });
+</script>
+{% endblock %}

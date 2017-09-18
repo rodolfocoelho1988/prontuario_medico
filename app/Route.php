@@ -4,6 +4,7 @@ namespace App;
 
 use App\Controllers\AgendamentoController;
 use App\Controllers\CidadeController;
+use App\Controllers\MenuController;
 use App\Controllers\Pages\AgendamentoPage;
 use App\Controllers\Pages\IndexPage;
 use App\Controllers\EspecialidadeController;
@@ -11,6 +12,7 @@ use App\Controllers\MedicoController;
 use App\Controllers\PacienteController;
 use App\Controllers\Pages\MedicoPage;
 use App\Controllers\Pages\PacientePage;
+use App\Controllers\ProntuarioController;
 use App\Controllers\TelefoneController;
 use App\Controllers\UsuarioController;
 use \App\Libs\Twig as Twig;
@@ -92,7 +94,7 @@ class Route
          */
         $this->route->respond('GET', '/agendamento', function($request) {
             $agendamentoPage = new AgendamentoPage($request);
-            echo $this->twig->render('agendamento.tpl.html', $agendamentoPage->index());
+            echo $agendamentoPage->index($this->twig);
         });
         $this->route->respond('GET', '/agendamento/cadastrar', function($request) {
             $agendamentoPage = new AgendamentoPage($request);
@@ -137,6 +139,20 @@ class Route
         $this->route->respond('GET', '/usuario/ativar/[i:id]', function($request) {
             $usuario = new UsuarioController();
             return json_encode($usuario->active($request));
+        });
+
+        /**
+         * Prontuário
+         */
+        $this->route->respond('GET', '/prontuario/[i:id]', function($request) {
+            $prontuario = new ProntuarioController();
+            $menu = new MenuController();
+            $array = [
+                "paciente" => $prontuario->paciente($request),
+                "menus" => $menu->get()
+            ];
+
+            echo $this->twig->render('prontuario.tpl.html', $array);
         });
     }
 
