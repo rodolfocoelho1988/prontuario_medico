@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="row">
-                        <a class="waves-effect waves-light btn col s12">Ficha Anamnese</a>
+                        <a onclick="sysmedic.medicalrecord.anamnese.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Anamnese</a>
                     </div>
                     <div class="row">
                         <a class="waves-effect waves-light btn col s12">Ficha Hipótese Diagnostico</a>
@@ -32,6 +32,111 @@
                 </div>
             </div>
         </div>
+        <div id="modal-anamnese" class="modal">
+            <div class="modal-content">
+                <h4>Ficha Anamnese</h4>
+                <form id="create-form" action="/agendamento/cadastrar">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Queixa principal" name="anamnese[queixa_principal]" id="queixa_principal" class="materialize-textarea"></textarea>
+                                <label for="queixa_principal">Queixa principal</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Histórico" name="anamnese[historico]" id="historico" class="materialize-textarea"></textarea>
+                                <label for="historico">Histórico</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Problemas renais" name="anamnese[problemas_renais]" id="problemas_renais" class="materialize-textarea"></textarea>
+                                <label for="problemas_renais">Problemas renais</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Problemas articulares" name="anamnese[problemas_articulares]" id="problemas_articulares" class="materialize-textarea"></textarea>
+                                <label for="problemas_articulares">Problemas articulares</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Problemas cardiacos" name="anamnese[problemas_cardiacos]" id="problemas_cardiacos" class="materialize-textarea"></textarea>
+                                <label for="problemas_cardiacos">Problemas cardiacos</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Problemas respiratórios" name="anamnese[problemas_respiratorios]" id="problemas_respiratorios" class="materialize-textarea"></textarea>
+                                <label for="problemas_respiratorios">Problemas respiratórios</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Problemas gastricos" name="anamnese[problemas_gastricos]" id="problemas_gastricos" class="materialize-textarea"></textarea>
+                                <label for="problemas_gastricos">Problemas gastricos</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Alergias" name="anamnese[alergias]" id="alergias" class="materialize-textarea"></textarea>
+                                <label for="alergias">Alergias</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            Hepatite
+                            <div class="switch">
+                                <label>
+                                    Não
+                                    <input name="anamnese[hepatite]" id="hepatite" type="checkbox">
+                                    <span class="lever"></span>
+                                    Sim
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            Gravidez
+                            <div class="switch">
+                                <label>
+                                    Não
+                                    <input name="anamnese[gravidez]" id="gravidez" type="checkbox">
+                                    <span class="lever"></span>
+                                    Sim
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            Diabetes
+                            <div class="switch">
+                                <label>
+                                    Não
+                                    <input name="anamnese[diabetes]" id="diabetes" type="checkbox">
+                                    <span class="lever"></span>
+                                    Sim
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            Problemas de cicatrização
+                            <div class="switch">
+                                <label>
+                                    Não
+                                    <input name="anamnese[problemas_de_cicatrizacao]" id="problemas_de_cicatrizacao" type="checkbox">
+                                    <span class="lever"></span>
+                                    Sim
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
+                <a onclick="sysmedic.medicalrecord.anamnese.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
+            </div>
+        </div>
     </div>
 </main>
 </div>
@@ -40,6 +145,7 @@
 
 {% block modulejs %}
 <script type="text/javascript" src="/js/module/ajax.js"></script>
+<script type="text/javascript" src="/js/module/medicalrecord.js"></script>
 {% endblock %}
 
 {% block javascript %}

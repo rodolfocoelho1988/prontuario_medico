@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Prontuario;
-use Klein\Request;
 
 class ProntuarioController extends Controller
 {
@@ -17,10 +16,4 @@ class ProntuarioController extends Controller
         parent::__construct();
         $this->prontuario = new Prontuario();
     }
-
-    public function paciente(Request $request)
-    {
-        return $this->prontuario->paciente($request->id);
-    }
-
 }

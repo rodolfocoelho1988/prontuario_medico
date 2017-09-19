@@ -4,6 +4,7 @@ namespace App;
 
 use App\Controllers\AgendamentoController;
 use App\Controllers\CidadeController;
+use App\Controllers\MedicalRecords\AnamneseController;
 use App\Controllers\MenuController;
 use App\Controllers\Pages\AgendamentoPage;
 use App\Controllers\Pages\IndexPage;
@@ -104,6 +105,19 @@ class Route
             $agendamento = new AgendamentoController();
             echo json_encode($agendamento->create($response));
         });
+        $this->route->respond('GET', '/agendamento/[i:id]', function($request) {
+            $agendamento = new AgendamentoController();
+            $menu = new MenuController();
+            $array = [
+                "paciente" => $agendamento->paciente($request),
+                "agendamento" => [
+                    "id" => $request->id
+                ],
+                "menus" => $menu->get()
+            ];
+
+            echo $this->twig->render('prontuario.tpl.html', $array);
+        });
 
         /**
          * Cidade
@@ -144,15 +158,9 @@ class Route
         /**
          * Prontuário
          */
-        $this->route->respond('GET', '/prontuario/[i:id]', function($request) {
-            $prontuario = new ProntuarioController();
-            $menu = new MenuController();
-            $array = [
-                "paciente" => $prontuario->paciente($request),
-                "menus" => $menu->get()
-            ];
-
-            echo $this->twig->render('prontuario.tpl.html', $array);
+        $this->route->respond('GET', '/prontuario/anamnese/[i:agendamento]', function($request) {
+            $anamnese = new AnamneseController();
+            echo json_encode($anamnese->byAgendamento($request));
         });
     }
 

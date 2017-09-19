@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Agendamento;
 use App\Requests\AgendamentoCreateRequest;
+use Klein\Request;
 use Klein\Response;
 
 class AgendamentoController extends Controller
@@ -79,8 +80,22 @@ class AgendamentoController extends Controller
         return $this->agendamento->getAll();
     }
 
+    /**
+     * Todos os agendamentos por médico
+     * @return array
+     */
     public function byDoctor()
     {
         return $this->agendamento->byDoctor((int) $_SESSION['user']->medico_id);
+    }
+
+    /**
+     * Dados do paciente de um determinado agendamento
+     * @param Request $request
+     * @return array
+     */
+    public function paciente(Request $request)
+    {
+        return $this->agendamento->paciente($request->id);
     }
 }
