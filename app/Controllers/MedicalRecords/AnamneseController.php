@@ -4,6 +4,7 @@ namespace App\Controllers\MedicalRecords;
 
 use App\Controllers\Controller;
 use App\Models\MedicalRecords\Anamnese;
+use App\Requests\AnamneseSaveRequest;
 use Klein\Request;
 use Klein\Response;
 
@@ -42,21 +43,28 @@ class AnamneseController extends Controller
         isset($anamnese['gravidez']) == false ? $anamnese['gravidez'] = 0 : $anamnese['gravidez'] = 1;
         isset($anamnese['diabetes']) == false ? $anamnese['diabetes'] = 0 : $anamnese['diabetes'] = 1;
         isset($anamnese['problemas_de_cicatrizacao']) == false ? $anamnese['problemas_de_cicatrizacao'] = 0 : $anamnese['problemas_de_cicatrizacao'] = 1;
-        if($this->byAgendamento($_POST['agendamento']) != false) {
-            try {
-                $this->anamnese->update($anamnese, $_POST['agendamento']);
-                $this->setResponse(["Ficha de Anamnese atualizada com sucesso!"]);
-            } catch (\Exception $exception) {
-                $response->code(302);
-                $this->setResponse(["errors" => ["save" => "Falha ao atualizar a Ficha de Anamnese"]]);
-            }
+
+        $rules = AnamneseSaveRequest::rules($anamnese);
+        if($rules !== true) {
+            $response->code(302);
+            $this->setResponse($rules);
         } else {
-            try {
-                $this->anamnese->create($anamnese, $_POST['agendamento']);
-                $this->setResponse(["Ficha de Anamnese criada com sucesso!"]);
-            } catch (\Exception $exception) {
-                $response->code(302);
-                $this->setResponse(["errors" => ["save" => "Falha ao criar a Ficha de Anamnese"]]);
+            if($this->byAgendamento($_POST['agendamento']) != false) {
+                try {
+                    $this->anamnese->update($anamnese, $_POST['agendamento']);
+                    $this->setResponse(["Ficha de Anamnese atualizada com sucesso!"]);
+                } catch (\Exception $exception) {
+                    $response->code(302);
+                    $this->setResponse(["errors" => ["save" => "Falha ao atualizar a Ficha de Anamnese"]]);
+                }
+            } else {
+                try {
+                    $this->anamnese->create($anamnese, $_POST['agendamento']);
+                    $this->setResponse(["Ficha de Anamnese criada com sucesso!"]);
+                } catch (\Exception $exception) {
+                    $response->code(302);
+                    $this->setResponse(["errors" => ["save" => "Falha ao criar a Ficha de Anamnese"]]);
+                }
             }
         }
 

@@ -32,12 +32,20 @@ sysmedic.medicalrecord = (function() {
             }
         },
         save: function(id) {
-            var error = function(errors) {
-
+            var error = function(resp) {
+                var values = resp.responseJSON;
+                var errors = '';
+                var key;
+                for(key in values) {
+                    values[key].forEach(function(error) {
+                        errors += error + "<br />";
+                    });
+                }
+                Materialize.toast(errors, 10000, 'rounded');
             };
 
             var success = function(response) {
-                console.log(response);
+                Materialize.toast(response, 10000, 'rounded');
             };
 
             var dados = $('#anamnese-form').serialize();
