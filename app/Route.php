@@ -160,7 +160,11 @@ class Route
          */
         $this->route->respond('GET', '/prontuario/anamnese/[i:agendamento]', function($request) {
             $anamnese = new AnamneseController();
-            echo json_encode($anamnese->byAgendamento($request));
+            echo json_encode($anamnese->byAgendamento($request->agendamento));
+        });
+        $this->route->respond('POST', '/prontuario/anamnese/save', function($request, $response) {
+            $anamnese = new AnamneseController();
+            echo json_encode($anamnese->save($response));
         });
     }
 
