@@ -98,4 +98,14 @@ class AgendamentoController extends Controller
     {
         return $this->agendamento->paciente($request->id);
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
+    public function close(Request $request, Response $response)
+    {
+        $this->agendamento->close($request->id);
+        $response->redirect("/agendamento");
+    }
 }

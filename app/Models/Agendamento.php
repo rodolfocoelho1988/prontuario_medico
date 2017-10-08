@@ -88,4 +88,17 @@ class Agendamento extends Model
         $db->execute();
         return $db->fetch();
     }
+
+    /**
+     * @param int $id
+     * @return int
+     */
+    public function close(int $id)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("UPDATE agendamento SET status = 0 WHERE id = :id");
+        $db->bindParam(":id", $id);
+        $db->execute();
+        return $db->rowCount();
+    }
 }

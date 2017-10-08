@@ -18,20 +18,21 @@
                         <a onclick="sysmedic.medicalrecord.anamnese.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Anamnese</a>
                     </div>
                     <div class="row">
-                        <a class="waves-effect waves-light btn col s12">Ficha Hipótese Diagnostico</a>
+                        <a onclick="sysmedic.medicalrecord.hipotese.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Hipótese Diagnostico</a>
                     </div>
                     <div class="row">
-                        <a class="waves-effect waves-light btn col s12">Ficha Prescrição Médica</a>
+                        <a onclick="sysmedic.medicalrecord.prescricao.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Prescrição Médica</a>
                     </div>
                     <div class="row">
-                        <a class="waves-effect waves-light btn col s12">Ficha Evolução do Paciente</a>
+                        <a onclick="sysmedic.medicalrecord.evolucao.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Evolução do Paciente</a>
                     </div>
                     <div class="row">
-                        <a class="waves-effect waves-light btn col s12">Ficha Atestado Médico</a>
+                        <a onclick="sysmedic.medicalrecord.atestado.modal({{ agendamento.id }})" class="waves-effect waves-light btn col s12">Ficha Atestado Médico</a>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Ficha de Anamnese -->
         <div id="modal-anamnese" class="modal">
             <div class="modal-content">
                 <h4>Ficha Anamnese</h4>
@@ -135,6 +136,96 @@
             <div class="modal-footer">
                 <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
                 <a onclick="sysmedic.medicalrecord.anamnese.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
+            </div>
+        </div>
+
+        <!-- Fecha de Hipótese -->
+        <div id="modal-hipotese" class="modal">
+            <div class="modal-content">
+                <h4>Ficha Hipótese Diagnóstico</h4>
+                <form id="hipotese-form">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Hipótese do médico" name="hipotese[hipotese_medico]" id="hipotese_medico" class="materialize-textarea"></textarea>
+                                <label for="hipotese_medico">Hipótese do médico</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Observações" name="hipotese[observacao]" id="observacao" class="materialize-textarea"></textarea>
+                                <label for="observacao">Observações</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
+                <a onclick="sysmedic.medicalrecord.hipotese.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
+            </div>
+        </div>
+
+        <!-- Fecha de Prescrição Médica -->
+        <div id="modal-prescricao" class="modal">
+            <div class="modal-content">
+                <h4>Ficha Prescrição Médica</h4>
+                <form id="prescricao-form">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Prescrição" name="prescricao[informacao]" id="informacao-prescricao" class="materialize-textarea"></textarea>
+                                <label for="informacao-prescricao">Informação</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
+                <a onclick="sysmedic.medicalrecord.prescricao.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
+            </div>
+        </div>
+
+        <!-- Fecha de Evolução do Paciente -->
+        <div id="modal-evolucao" class="modal">
+            <div class="modal-content">
+                <h4>Ficha Evolução do Paiente</h4>
+                <form id="evolucao-form">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Evolução do Paciente" name="evolucao[informacao]" id="informacao-evolucao" class="materialize-textarea"></textarea>
+                                <label for="informacao-evolucao">Informação</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
+                <a onclick="sysmedic.medicalrecord.evolucao.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
+            </div>
+        </div>
+
+        <!-- Fecha de Atestado Médico -->
+        <div id="modal-atestado" class="modal">
+            <div class="modal-content">
+                <h4>Ficha Atestado Médico</h4>
+                <form id="atestado-form">
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea length="1000" placeholder="Atestado Médico" name="atestado[informacao]" id="informacao-atestado" class="materialize-textarea"></textarea>
+                                <label for="informacao-atestado">Informação</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-grey btn-flat">Fechar</a>
+                <a onclick="sysmedic.medicalrecord.atestado.save({{ agendamento.id }})" class="modal-action waves-effect waves-green btn-flat">Salvar</a>
             </div>
         </div>
     </div>

@@ -5,6 +5,10 @@ namespace App;
 use App\Controllers\AgendamentoController;
 use App\Controllers\CidadeController;
 use App\Controllers\MedicalRecords\AnamneseController;
+use App\Controllers\MedicalRecords\AtestadoController;
+use App\Controllers\MedicalRecords\EvolucaoController;
+use App\Controllers\MedicalRecords\HipoteseController;
+use App\Controllers\MedicalRecords\PrescricaoController;
 use App\Controllers\MenuController;
 use App\Controllers\Pages\AgendamentoPage;
 use App\Controllers\Pages\IndexPage;
@@ -118,6 +122,10 @@ class Route
 
             echo $this->twig->render('prontuario.tpl.html', $array);
         });
+        $this->route->respond('GET', '/agendamento/[i:id]/fechar', function($request, $response) {
+            $agendamento = new AgendamentoController();
+            return $agendamento->close($request, $response);
+        });
 
         /**
          * Cidade
@@ -165,6 +173,42 @@ class Route
         $this->route->respond('POST', '/prontuario/anamnese/save', function($request, $response) {
             $anamnese = new AnamneseController();
             echo json_encode($anamnese->save($response));
+        });
+
+        $this->route->respond('GET', '/prontuario/hipotese/[i:agendamento]', function($request) {
+            $hipotese = new HipoteseController();
+            echo json_encode($hipotese->byAgendamento($request->agendamento));
+        });
+        $this->route->respond('POST', '/prontuario/hipotese/save', function($request, $response) {
+            $hipotese = new HipoteseController();
+            echo json_encode($hipotese->save($response));
+        });
+
+        $this->route->respond('GET', '/prontuario/prescricao/[i:agendamento]', function($request) {
+            $prescricao = new PrescricaoController();
+            echo json_encode($prescricao->byAgendamento($request->agendamento));
+        });
+        $this->route->respond('POST', '/prontuario/prescricao/save', function($request, $response) {
+            $prescricao = new PrescricaoController();
+            echo json_encode($prescricao->save($response));
+        });
+
+        $this->route->respond('GET', '/prontuario/evolucao/[i:agendamento]', function($request) {
+            $evolucao = new EvolucaoController();
+            echo json_encode($evolucao->byAgendamento($request->agendamento));
+        });
+        $this->route->respond('POST', '/prontuario/evolucao/save', function($request, $response) {
+            $evolucao = new EvolucaoController();
+            echo json_encode($evolucao->save($response));
+        });
+
+        $this->route->respond('GET', '/prontuario/atestado/[i:agendamento]', function($request) {
+            $atestado = new AtestadoController();
+            echo json_encode($atestado->byAgendamento($request->agendamento));
+        });
+        $this->route->respond('POST', '/prontuario/atestado/save', function($request, $response) {
+            $atestado = new AtestadoController();
+            echo json_encode($atestado->save($response));
         });
     }
 
