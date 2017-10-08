@@ -21,6 +21,7 @@
     "datatables": "^1.10.15",
     "material-preloader": "*",
     "jquery-mask-plugin": "^1.14.11",
-    "select2": "^4.0.3"
+    "select2": "^4.0.3",
+    "pickadate": "^3.5.6"
   }
 }

@@ -97,9 +97,9 @@ abstract class Model
      */
     private function verifyEnvironment()
     {
-        $this->server = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'localhost': '149.56.170.139';
-        $this->username = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'root': 'admin_prontuario';
-        $this->password = ($_SERVER['HTTP_HOST'] == 'localhost') ? '123456': 'eRw513@w';
-        $this->database_name = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'sysmedic': 'lockhost_prontuario';
+        $this->server = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'localhost': '149.56.170.139';
+        $this->username = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'root': 'admin_prontuario';
+        $this->password = ($_SERVER['SERVER_NAME'] == 'localhost') ? '123456': '123456yves';
+        $this->database_name = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'sysmedic': 'lockhost_prontuario';
     }
 }
