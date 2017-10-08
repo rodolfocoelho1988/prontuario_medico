@@ -56,6 +56,7 @@ abstract class Model
      */
     public function __construct()
 	{
+        $this->verifyEnvironment();
 		try {
             if(!self::$objInstance) {
                 self::$objInstance = new \PDO("mysql:host=$this->server;dbname=$this->database_name", $this->username, $this->password, $this->option);
@@ -89,5 +90,16 @@ abstract class Model
         $db->bindParam(":value", $value);
         $db->execute();
         return $db->rowCount();
+    }
+
+    /**
+     * Verifica o ambiente
+     */
+    private function verifyEnvironment()
+    {
+        $this->server = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'localhost': '149.56.170.139';
+        $this->username = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'root': 'lockhost_prontuario';
+        $this->password = ($_SERVER['HTTP_HOST'] == 'localhost') ? '123456': 'eRw513@w';
+        $this->database_name = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'sysmedic': 'admin_prontuario';
     }
 }
