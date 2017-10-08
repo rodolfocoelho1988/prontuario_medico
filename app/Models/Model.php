@@ -98,8 +98,8 @@ abstract class Model
     private function verifyEnvironment()
     {
         $this->server = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'localhost': '149.56.170.139';
-        $this->username = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'root': 'lockhost_prontuario';
+        $this->username = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'root': 'admin_prontuario';
         $this->password = ($_SERVER['HTTP_HOST'] == 'localhost') ? '123456': 'eRw513@w';
-        $this->database_name = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'sysmedic': 'admin_prontuario';
+        $this->database_name = ($_SERVER['HTTP_HOST'] == 'localhost') ? 'sysmedic': 'lockhost_prontuario';
     }
 }
