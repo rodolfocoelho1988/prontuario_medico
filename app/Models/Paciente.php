@@ -83,10 +83,25 @@ class Paciente extends Model
         return $db->fetchAll(\PDO::FETCH_CLASS);
     }
 
+    /**
+     * @return array
+     */
     public function getActive()
     {
         $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.cpf, t2.rg, t2.ativo, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) WHERE t2.ativo = 1 ORDER BY t1.id DESC");
         $db->execute();
         return $db->fetchAll(\PDO::FETCH_CLASS);
+    }
+
+    /**
+     * @param int $paciente
+     * @return array
+     */
+    public function get(int $paciente)
+    {
+        $db = self::getInstance()->prepare("SELECT t1.*, t2.nome, t2.email, t2.cpf, t2.rg, t2.ativo, t3.nome as nacionalidade FROM paciente AS t1 INNER JOIN pessoa AS t2 ON (t1.pessoa_id = t2.id) INNER JOIN pais AS t3 ON (t2.nacionalidade_id = t3.id) WHERE t1.id = :paciente");
+        $db->bindParam(":paciente", $paciente);
+        $db->execute();
+        return $db->fetch();
     }
 }

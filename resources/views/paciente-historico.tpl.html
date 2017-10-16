@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'template.tpl.html' %}
+{% block title %}Histórico do Paciente - SysMedic{% endblock %}
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/bower_components/datatables/media/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block sidebar %}
+{% include "sidebar.tpl.html" %}
+{% endblock %}
+
+{% block content %}
+    <main class="mn-inner">
+        <div class="row no-m-t no-m-b">
+            <div class="col s12 m12 l12">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">Histórico do Paciente: {{ paciente.nome }} - E-mail: {{ paciente.email }}</span>
+                        <table id="datatable" class="display responsive-table datatable-example">
+                            <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>E-mail</th>
+                                <th>Descrição</th>
+                                <th>Prontuário Anamnese</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for agendamento in agendamentos %}
+                            <tr>
+                                <td>{{ agendamento.paciente }}</td>
+                                <td>{{ agendamento.email }}</td>
+                                <td> <a onclick="sysmedic.scheduling.view('{{ agendamento.descricao }}')" class="waves-effect waves-light blue btn">Visualizar</a></td>
+                                <td>
+                                    <a class="waves-effect waves-light btn">Visualizar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<div class="left-sidebar-hover"></div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+{% block modulejs %}
+<script type="text/javascript" src="/js/module/table.js"></script>
+<script type="text/javascript" src="/js/module/ajax.js"></script>
+{% endblock %}
+{% block scriptjs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        sysmedic.table.init();
+        $('.agendamento').addClass('active');
+        $('.collapsible').collapsible('open', 0);
+    });
+</script>
+{% endblock %}

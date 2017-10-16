@@ -6,6 +6,7 @@ use App\Models\Endereco;
 use App\Models\Paciente;
 use App\Models\Usuario;
 use App\Requests\PacienteRegisterRequest;
+use Klein\Request;
 use Klein\Response;
 
 class PacienteController extends Controller
@@ -122,5 +123,15 @@ class PacienteController extends Controller
     public function getActive()
     {
         return $this->paciente->getActive();
+    }
+
+    /**
+     * Busca todos os dados de um determinado paciente
+     * @param Request $request
+     * @return array
+     */
+    public function get(Request $request)
+    {
+        return $this->paciente->get($request->id);
     }
 }

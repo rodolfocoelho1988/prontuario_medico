@@ -71,7 +71,7 @@ class Agendamento extends Model
     public function byDoctor(int $medico)
     {
         $db = self::getInstance();
-        $db = $db->prepare("SELECT t1.id, t1.descricao, t5.nome as paciente, t5.email, DATE_FORMAT(t1.horario, '%d-%m-%Y %H:%i') as horario FROM agendamento as t1 INNER JOIN medico as t2 ON (t1.medico_id = t2.id) INNER JOIN pessoa as t3 ON (t2.pessoa_id = t3.id) INNER JOIN paciente AS t4 ON (t4.id = t1.paciente_id) INNER JOIN pessoa t5 ON (t5.id = t4.pessoa_id) WHERE status = 1 AND t1.medico_id = $medico ORDER BY t1.horario ASC");
+        $db = $db->prepare("SELECT t1.id, t1.descricao, t5.nome as paciente, t4.id as paciente_id, t5.email, DATE_FORMAT(t1.horario, '%d-%m-%Y %H:%i') as horario FROM agendamento as t1 INNER JOIN medico as t2 ON (t1.medico_id = t2.id) INNER JOIN pessoa as t3 ON (t2.pessoa_id = t3.id) INNER JOIN paciente AS t4 ON (t4.id = t1.paciente_id) INNER JOIN pessoa t5 ON (t5.id = t4.pessoa_id) WHERE status = 1 AND t1.medico_id = $medico ORDER BY t1.horario ASC");
         $db->execute();
         return $db->fetchAll();
     }
@@ -100,5 +100,18 @@ class Agendamento extends Model
         $db->bindParam(":id", $id);
         $db->execute();
         return $db->rowCount();
+    }
+
+    /**
+     * @param int $paciente
+     * @return array
+     */
+    public function getByPaciente(int $paciente)
+    {
+        $database = self::getInstance();
+        $db = $database->prepare("SELECT t1.*, t4.nome as paciente, t4.email, t5.nome as medico FROM agendamento AS t1 INNER JOIN paciente AS t2 ON (t2.id = t1.paciente_id) INNER JOIN pessoa AS t4 ON (t4.id = t2.pessoa_id) INNER JOIN medico AS t3 ON (t3.id = t1.medico_id) INNER JOIN pessoa AS t5 ON (t5.id = t3.pessoa_id) WHERE t1.paciente_id = :paciente");
+        $db->bindParam(":paciente", $paciente);
+        $db->execute();
+        return $db->fetchAll();
     }
 }

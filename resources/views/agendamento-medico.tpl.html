@@ -44,6 +44,7 @@
                                     <td> <a onclick="sysmedic.scheduling.view('{{ agendamento.descricao }}')" class="waves-effect waves-light blue btn">Visualizar</a></td>
                                     <td>
                                         <a href="/agendamento/{{ agendamento.id }}" class="waves-effect waves-light btn">Prontuário</a>
+                                        <a href="/paciente/{{ agendamento.paciente_id }}/historico" class="waves-effect waves-light btn">Histórico</a>
                                         <a href="/agendamento/{{ agendamento.id }}/fechar" class="waves-effect waves-light green btn">Fechar agendamento</a>
                                     </td>
                                 </tr>

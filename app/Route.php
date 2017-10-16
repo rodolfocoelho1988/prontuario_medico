@@ -93,6 +93,19 @@ class Route
             $paciente = new PacienteController();
             echo json_encode($paciente->create($response));
         });
+        $this->route->respond('GET', '/paciente/[i:id]/historico', function($request, $response) {
+            $agendamento = new AgendamentoController();
+            $paciente = new PacienteController();
+            $agendamentos = $agendamento->getByPaciente($request);
+            $menu = new MenuController();
+            $array = [
+                "paciente" => $paciente->get($request),
+                "menus" => $menu->get(),
+                "agendamentos" => $agendamentos
+            ];
+            //echo json_encode($agendamentos);
+            echo $this->twig->render('paciente-historico.tpl.html', $array);
+        });
 
         /**
          * Agendamento

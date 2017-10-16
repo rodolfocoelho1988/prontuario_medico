@@ -108,4 +108,14 @@ class AgendamentoController extends Controller
         $this->agendamento->close($request->id);
         $response->redirect("/agendamento");
     }
+
+    /**
+     * Lista todos os agendamentos de um determinado paciente
+     * @param Request $request
+     * @return array
+     */
+    public function getByPaciente(Request $request)
+    {
+        return $this->agendamento->getByPaciente($request->id);
+    }
 }
