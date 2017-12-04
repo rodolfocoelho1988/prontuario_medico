@@ -103,7 +103,6 @@ class Route
                 "menus" => $menu->get(),
                 "agendamentos" => $agendamentos
             ];
-            //echo json_encode($agendamentos);
             echo $this->twig->render('paciente-historico.tpl.html', $array);
         });
 

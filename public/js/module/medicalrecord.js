@@ -6,7 +6,6 @@ sysmedic.medicalrecord = (function() {
      * Se abrir uma vez o modal não irá mais recuperar os dados;
      * @type {boolean}
      */
-    var abriuAnamnese = false;
     var abriuHipotese = false;
     var abriuPrescricao = false;
     var abriuEvolucao = false;
@@ -26,14 +25,9 @@ sysmedic.medicalrecord = (function() {
                         $('#'+index).val(response[index]);
                 }
                 $('#modal-anamnese').openModal();
-                abriuAnamnese = true;
             };
 
-            if(abriuAnamnese === false)
-                sysmedic.ajax.send('GET', '/prontuario/anamnese/'+agendamento+'', '', 'json', '', error, success);
-            else {
-                $('#modal-anamnese').openModal();
-            }
+            sysmedic.ajax.send('GET', '/prontuario/anamnese/'+agendamento+'', '', 'json', '', error, success);
         },
         save: function(id) {
             var error = function(resp) {
