@@ -102,11 +102,17 @@ class AgendamentoController extends Controller
     /**
      * @param Request $request
      * @param Response $response
+     * @return array|string
      */
     public function close(Request $request, Response $response)
     {
-        $this->agendamento->close($request->id);
-        $response->redirect("/agendamento");
+        if($this->agendamento->close($request->id)) {
+            $this->setResponse(["msg" => "Agendamento fechado com sucesso."]);
+        } else {
+            $response->code(302);
+            $this->setResponse(["msg" => [["É necessário preencher a ficha de Anamnese."]]]);
+        }
+        return $this->getResponse();
     }
 
     /**

@@ -136,7 +136,7 @@ class Route
         });
         $this->route->respond('GET', '/agendamento/[i:id]/fechar', function($request, $response) {
             $agendamento = new AgendamentoController();
-            return $agendamento->close($request, $response);
+            echo json_encode($agendamento->close($request, $response));
         });
 
         /**

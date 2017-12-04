@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\MedicalRecords\Anamnese;
+
 class Agendamento extends Model
 {
     /**
@@ -91,15 +93,23 @@ class Agendamento extends Model
 
     /**
      * @param int $id
-     * @return int
+     * @return bool|int
      */
     public function close(int $id)
     {
-        $database = self::getInstance();
-        $db = $database->prepare("UPDATE agendamento SET status = 0 WHERE id = :id");
-        $db->bindParam(":id", $id);
-        $db->execute();
-        return $db->rowCount();
+        $anamnese = new Anamnese();
+        /**
+         * Verifica se há uma ficha de anamnese.
+         */
+        if($anamnese->byAgendamento($id) !== false) {
+            $database = self::getInstance();
+            $db = $database->prepare("UPDATE agendamento SET status = 0 WHERE id = :id");
+            $db->bindParam(":id", $id);
+            $db->execute();
+            return $db->rowCount();
+        } else {
+            return false;
+        }
     }
 
     /**
